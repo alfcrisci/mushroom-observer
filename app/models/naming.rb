@@ -203,16 +203,9 @@ class Naming < AbstractModel
 
   # Retrieve a given User's vote for this naming.
   def users_vote(user)
-    result = nil
-    for v in votes
-      if (v.user_id == user.id)
-        result = v
-        break
-      end
-    end
-    return result
+    return votes.select {|x| x.user_id == user.id}.first
   end
-
+  
   # Is this Naming the given User's favorite Naming for this Observation?
   def is_users_favorite?(user)
     result = false
@@ -290,7 +283,7 @@ class Naming < AbstractModel
     tot_sum = 0
     tot_wgt = 0
     for v in votes
-      str = Vote.confidence(v.value)
+      str = Vote.opinion(v.value)
       wgt = v.user_weight
       table[str][:num] += 1
       table[str][:wgt] += wgt

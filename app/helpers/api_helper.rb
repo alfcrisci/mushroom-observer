@@ -106,7 +106,7 @@ module ApiHelper
     end
   end
 
-  def xml_confidence_level(xml, tag, val)
+  def xml_opinion_level(xml, tag, val)
     str = '%.2f' % val
     xml.send(tag, str, :type => 'float', :range => '-3.0 to 3.0')
   rescue

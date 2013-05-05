@@ -35,8 +35,7 @@
             <%= check_box(:observation, :specimen,               :index => obs.id, :object => obs, :title => :form_observations_specimen_available_help.l) %>
             <%= menu = @vote_menu
                 vote = @votes[obs.id] || @no_vote
-                menu << [ :vote_no_opinion.t, 0 ] if vote.value == 0
-                select(:observation, :value, menu, { :object => vote }, { :index => obs.id, :title => :Confidence_level.l}) %> &nbsp;
+                select(:observation, :value, menu, { :object => vote }, { :index => obs.id, :title => :opinion_level.l}) %> &nbsp;
           </td>
           <% imgs = obs.images.select {|i| i.id == obs.thumb_image_id}
           imgs += obs.images

@@ -209,7 +209,7 @@
 #  interests::               Interests in this Name.
 #  observations::            Observations using this Name as consensus.
 #  namings::                 Namings that use this Name.
-#  reviewed_observations::   Observation's that have > 80% confidence.
+#  reviewed_observations::   Observation's that have > 80% opinion.
 #
 #  ==== Merging
 #  mergeable?::               Is it safe to merge this Name into another.
@@ -304,7 +304,7 @@ class Name < AbstractModel
     self.description.classification if self.description
   end
   
-  # Get an Array of Observation's for this Name that have > 80% confidence.
+  # Get an Array of Observation's for this Name that have > 80% opinion.
   def reviewed_observations
     Observation.all(:conditions => "name_id = #{id} and vote_cache >= 2.4")
   end

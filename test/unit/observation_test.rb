@@ -600,4 +600,9 @@ class ObservationTest < UnitTestCase
     assert_true(obs.has_edit_permission?(@mary))
     assert_true(obs.has_edit_permission?(@dick))
   end
+
+  def test_latest_max_vote
+    obs = observations(:coprinus_comatus_obs)
+    assert_equal(votes(:coprinus_comatus_other_naming_mary_vote), obs.latest_max_vote)
+  end
 end

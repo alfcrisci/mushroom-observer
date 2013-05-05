@@ -692,4 +692,25 @@ namespace :jason do
     user = User.find(252)
     AccountMailer.deliver_user_question(user, user, 'test', 'test')
   end
+  
+  desc "recency_issues"
+  task(:recency_issues => :environment) do
+    ids = Observation.connection.select_values "select distinct o.id from votes v, observations o, namings n where v.observation_id = o.id and v.naming_id = n.id and v.value = 3 and o.name_id != n.name_id"
+    for oid in ids
+      obs = Observation.find_by_id(oid)
+      v = obs.latest_max_vote()
+      if v.name != obs.name
+        start_name = obs.name
+        print "#{oid}\t#{obs.name.search_name}\t#{v.name.search_name}\t#{obs.vote_cache}"
+        obs.calc_consensus
+        print "\t#{obs.name.search_name}\t#{obs.vote_cache}\t"
+        if start_name != obs.name
+          print "!="
+        else
+          print "="
+        end
+        print "\n"
+      end
+    end
+  end
 end

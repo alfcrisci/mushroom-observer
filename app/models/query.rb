@@ -43,7 +43,7 @@ class Query < AbstractQuery
       :license?         => License,
       :has_votes?       => :boolean,
       :quality?         => [:integer],
-      :confidence?      => [:integer],
+      :opinion?         => [:integer],
       :ok_for_export?   => :boolean,
     },
     :Location => {
@@ -109,7 +109,7 @@ class Query < AbstractQuery
       :locations?      => [:string],
       :projects?       => [:string],
       :species_lists?  => [:string],
-      :confidence?     => [:float],
+      :opinion?        => [:float],
       :include_admin?  => :boolean,
       :is_col_loc?     => :boolean,
       :has_specimen?   => :boolean,
@@ -846,7 +846,7 @@ class Query < AbstractQuery
         'rss_logs.modified DESC'
       end
 
-    when 'confidence'
+    when 'opinion'
       if model_symbol == :Image
         self.join << {:images_observations => :observations}
         'observations.vote_cache DESC'
@@ -952,7 +952,7 @@ class Query < AbstractQuery
       'LENGTH(COALESCE(images.votes,"")) = 0'
     )
     initialize_model_do_range(:quality, :vote_cache)
-    initialize_model_do_range(:confidence, 'observations.vote_cache',
+    initialize_model_do_range(:opinion, 'observations.vote_cache',
       :join => {:images_observations => :observations}
     )
     initialize_model_do_boolean(:ok_for_export,
@@ -1102,7 +1102,7 @@ class Query < AbstractQuery
       'observations_species_lists.species_list_id',
       :join => :observations_species_lists
     )
-    initialize_model_do_range(:confidence, :vote_cache)
+    initialize_model_do_range(:opinion, :vote_cache)
     initialize_model_do_search(:notes_has, :notes)
     initialize_model_do_boolean(:is_col_loc,
       'observations.is_collection_location IS TRUE',

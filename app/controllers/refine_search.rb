@@ -100,7 +100,7 @@ module RefineSearch
       :license,
       :has_votes,
       :quality,
-      :confidence,
+      :opinion,
       :ok_for_export,
     ],
 
@@ -206,7 +206,7 @@ module RefineSearch
       :children_names,
       :locations,
       :species_lists,
-      :confidence,
+      :opinion,
       :include_admin,
       :is_col_loc,
       :has_specimen,
@@ -328,14 +328,14 @@ module RefineSearch
     )
   end
 
-  def rs_field_confidence(model, flavor)
+  def rs_field_opinion(model, flavor)
     Field.new(
-      :name  => :confidence,
-      :label => :refine_search_confidence,
+      :name  => :opinion,
+      :label => :refine_search_opinion,
       :input => :menu2,
       :word  => :VOTE.t,
       :or_equal => true,
-      :opts  => Vote.confidence_menu.map {|a,b| [a.l,b.to_s]},
+      :opts  => Vote.opinion_menu.map {|a,b| [a.l,b.to_s]},
       :blank => true
     )
   end
@@ -1027,7 +1027,7 @@ module RefineSearch
   #    text2::      Pair of two values, e.g. dates or times.
   #    textN::      Array of values, will create N + 1 text fields.
   #    menu::       Value of selected item.
-  #    menu2::      Pair of values, e.g. confidence levels.
+  #    menu2::      Pair of values, e.g. opinion levels.
   #    checkboxes:: Array of values of checked check-boxes.
   #
   ##############################################################################

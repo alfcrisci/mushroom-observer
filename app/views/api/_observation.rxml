@@ -16,7 +16,7 @@ xml.send(tag,
   xml_boolean(xml, :specimen_available, true) if object.specimen
   xml_boolean(xml, :is_collection_location, true) if object.is_collection_location
   xml_detailed_object(xml, :consensus_name, object.name)
-  xml_confidence_level(xml, :confidence, object.vote_cache)
+  xml_opinion_level(xml, :opinion, object.vote_cache)
   if detail
     xml_html_string(xml, :notes, object.notes.to_s.tpl_nodiv)
     xml_datetime(xml, :created, object.created)

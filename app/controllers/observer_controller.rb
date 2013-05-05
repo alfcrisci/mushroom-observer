@@ -262,9 +262,9 @@ class ObserverController < ApplicationController
 
   # Help page.
   def how_to_use # :nologin:
-    @min_pos_vote = Vote.confidence(Vote.min_pos_vote).l
-    @min_neg_vote = Vote.confidence(Vote.min_neg_vote).l
-    @maximum_vote = Vote.confidence(Vote.maximum_vote).l
+    @min_pos_vote = Vote.opinion(Vote.min_pos_vote).l
+    @min_neg_vote = Vote.opinion(Vote.min_neg_vote).l
+    @maximum_vote = Vote.opinion(Vote.maximum_vote).l
   end
 
   # A few ways in which users can help.
@@ -752,7 +752,7 @@ class ObserverController < ApplicationController
       ['created',    :sort_by_posted.t],
       [(query.flavor == :by_rss_log ? 'rss_log' : 'modified'),
                      :sort_by_modified.t],
-      ['confidence', :sort_by_confidence.t],
+      ['opinion',    :sort_by_opinion.t],
       ['thumbnail_quality', :sort_by_thumbnail_quality.t],
       ['num_views',  :sort_by_num_views.t],
     ]
@@ -915,7 +915,7 @@ class ObserverController < ApplicationController
   # Inputs: params[:id]
   # Outputs:
   #   @observation
-  #   @confidence_menu    (used to create vote menus)
+  #   @opinion_menu    (used to create vote menus)
   #   @no_opinion         (used to add 'No Opinion' vote)
   #   @votes                        (user's vote for each naming.id)
   def show_observation # :nologin: :prefetch:
@@ -973,12 +973,11 @@ class ObserverController < ApplicationController
         # Provide a list of user's votes to view.
         @votes = {}
         for naming in @observation.namings
-          vote = naming.votes.select {|x| x.user_id == @user.id}.first
-          vote ||= Vote.new(:value => 0)
-          @votes[naming.id] = vote
+          @votes[naming.id] = naming.users_vote(@user) || Vote.new(:value => 0)
         end
-        @confidence_menu = translate_menu(Vote.confidence_menu)
+        @opinion_menu = translate_menu(Vote.opinion_menu)
         @no_opinion  = Vote.no_opinion
+        @confidence_menu = translate_menu(Vote.confidence_menu)
       end
     end
   end
@@ -1021,7 +1020,7 @@ class ObserverController < ApplicationController
   # Outputs:
   #   @observation, @naming, @vote      empty objects
   #   @what, @names, @valid_names       name validation
-  #   @confidence_menu                  used for vote option menu
+  #   @opinion_menu                  used for vote option menu
   #   @reason                           array of naming_reasons
   #   @images                           array of images
   #   @licenses                         used for image license menu
@@ -1032,7 +1031,7 @@ class ObserverController < ApplicationController
     # These are needed to create pulldown menus in form.
     @licenses = License.current_names_and_ids(@user.license)
     @new_image = init_image(Time.now)
-    @confidence_menu = translate_menu(Vote.confidence_menu)
+    @opinion_menu = translate_menu(Vote.opinion_menu)
 
     # Clear search list. [Huh? -JPH 20120513]
     clear_query_in_session
@@ -1358,13 +1357,13 @@ class ObserverController < ApplicationController
   # Outputs:
   #   @observation, @naming, @vote      empty objects
   #   @what, @names, @valid_names       name validation
-  #   @confidence_menu                  used for vote option menu
+  #   @opinion_menu                     used for vote option menu
   #   @reason                           array of naming_reasons
   #
   def create_naming # :prefetch: :norobots:
     pass_query_params
     if @observation = find_or_goto_index(Observation, params[:id].to_s)
-      @confidence_menu = translate_menu(Vote.confidence_menu)
+      @opinion_menu = translate_menu(Vote.opinion_menu)
 
       # Create empty instances first time through.
       if request.method != :post
@@ -1444,7 +1443,7 @@ class ObserverController < ApplicationController
   # Outputs:
   #   @observation, @naming, @vote      empty objects
   #   @what, @names, @valid_names       name validation
-  #   @confidence_menu                  used for vote option menu
+  #   @opinion_menu                     used for vote option menu
   #   @reason                           array of naming_reasons
   #
   def edit_naming # :prefetch: :norobots:
@@ -1458,7 +1457,7 @@ class ObserverController < ApplicationController
     end
     @vote = Vote.find(:first, :conditions =>
       ['naming_id = ? AND user_id = ?', @naming.id, @naming.user_id])
-    @confidence_menu = translate_menu(Vote.confidence_menu)
+    @opinion_menu = translate_menu(Vote.opinion_menu)
 
     # Make sure user owns this naming!
     if !check_permission!(@naming)

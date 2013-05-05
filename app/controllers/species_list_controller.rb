@@ -441,7 +441,7 @@ class SpeciesListController < ApplicationController
         vote = obs.consensus_naming.users_vote(@user) rescue nil
         @votes[obs.id] = vote || Vote.new
       end
-      @vote_menu = translate_menu(Vote.confidence_menu)
+      @vote_menu = translate_menu(Vote.opinion_menu)
       @no_vote = Vote.new
       @no_vote.value = 0
       if @observation.empty?

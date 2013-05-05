@@ -40,7 +40,8 @@
           <th><%= :show_namings_consensus.t %></th>
             <% if logged_in %>
               <th></th>
-              <th><%= :show_namings_your_vote.t %></th>
+              <th><%= :show_namings_your_opinion.t %></th>
+              <th>Confidence</th>
             <% end %>
           <th></th>
           <th></th>
@@ -93,12 +94,15 @@
               <td width="20">&nbsp;</td>
               <td>
                 <% @vote = @votes[naming.id]
-                menu = @confidence_menu
+                menu = @opinion_menu
                 if !check_permission(naming) or (check_permission(naming) && (!@vote || @vote.value == 0))
                   menu = [@no_opinion] + menu
                 end %>
                 <%= select('vote', 'value', menu, {}, { :index => naming.id,
                            :onchange => "change_vote(#{naming.id})" }) %>
+              </td>
+              <td>
+                <%= select('vote', 'confidence', @confidence_menu, {}, { :index => naming.id }) %>
                 <%= submit_tag(:show_namings_cast.l) if !can_do_ajax? %>
               </td>
             <% end %>

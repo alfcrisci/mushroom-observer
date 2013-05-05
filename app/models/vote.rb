@@ -28,7 +28,7 @@
 #  created::            Date/time it was first created.
 #  modified::           Date/time it was last modified.
 #  user::               User that created it.
-#  value::              Value of Vote, a Float: 3.0 = 100%, -3.0 = -100%
+#  value::              Value of Vote, a Float: 3.0 = 100%, -3.0 = -100% (really opinion)
 #  naming::             Naming we're voting on.
 #  observation::        Observation the Naming belongs to.
 #  favorite::           Is this the User's favorite Vote for this Observation?
@@ -45,8 +45,8 @@
 #  percent::            Convert value to percentage.
 #
 #  ==== Vote labels
-#  confidence_menu::    Structure used by form helper +select+ to create pulldown menu.
-#  confidence::         Classify value as confidence level, String.
+#  opinion_menu::    Structure used by form helper +select+ to create pulldown menu.
+#  opinion::         Classify value as an opinion, String.
 #
 #  == Instance methods
 #
@@ -75,6 +75,14 @@ class Vote < AbstractModel
   NEXT_BEST_VOTE =  2
   MAXIMUM_VOTE   =  3
 
+  def minimum_vote
+    MINIMUM_VOTE
+  end
+  
+  def name # Keep Demeter happy
+    self.naming.name
+  end
+  
   # Override the default show_controller
   def self.show_controller
     'observer'
@@ -136,51 +144,64 @@ class Vote < AbstractModel
   #  :section: Labels
   # ----------------------------
 
-  CONFIDENCE_VALS = [
-    [ :vote_confidence_100,  3 ],
-    [ :vote_confidence_80,   2 ],
-    [ :vote_confidence_60,   1 ],
-    [ :vote_confidence_40,  -1 ],
-    [ :vote_confidence_20,  -2 ],
-    [ :vote_confidence_0,   -3 ]
+  OPINION_VALS = [
+    [ :vote_opinion_100,  3 ],
+    [ :vote_opinion_80,   2 ],
+    [ :vote_opinion_60,   1 ],
+    [ :vote_opinion_40,  -1 ],
+    [ :vote_opinion_20,  -2 ],
+    [ :vote_opinion_0,   -3 ]
   ]
 
   NO_OPINION_VAL = [:vote_no_opinion, 0]
 
+  CONFIDENCE_VALS = [
+    [ :vote_confidence_high, 1.0 ],
+    [ :vote_confidence_medium, 0.5 ],
+    [ :vote_confidence_low, 0.0 ]
+  ]
+
   # Force unit tests to verify existence of these translations.
   if false
-    :vote_confidence_100.l
-    :vote_confidence_80.l
-    :vote_confidence_60.l
-    :vote_confidence_40.l
-    :vote_confidence_20.l
-    :vote_confidence_0.l
+    :vote_opinion_100.l
+    :vote_opinion_80.l
+    :vote_opinion_60.l
+    :vote_opinion_40.l
+    :vote_opinion_20.l
+    :vote_opinion_0.l
     :vote_no_opinion.l
+    :vote_confidence_high.l
+    :vote_confidence_medium.l
+    :vote_confidence_low.l
   end
 
-  # List of options interpreted as "confidence".
+  # List of options interpreted as "opinion".
   #
-  #   for label, value in Vote.confidence_menu
+  #   for label, value in Vote.opinion_menu
   #     puts "#{label.l} #{value}"
   #   end
   #
-  def self.confidence_menu
-    CONFIDENCE_VALS
-  end
+  # def self.opinion_menu
+  #   OPINION_VALS
+  # end
 
   def self.no_opinion
     :vote_no_opinion.l
   end
 
   def self.opinion_menu
-    [NO_OPINION_VAL] + confidence_menu
+    OPINION_VALS
   end
   
-  # Find label of closest value in the "confidence" menu.
-  def self.confidence(val)
-    lookup_value(val, confidence_menu)
+  # Find label of closest value in the "opinion" menu.
+  def self.opinion(val)
+    lookup_value(val, opinion_menu)
   end
 
+  def self.confidence_menu
+    CONFIDENCE_VALS
+  end
+  
   # ----------------------------
   #  :section: Other
   # ----------------------------

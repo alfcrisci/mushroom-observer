@@ -218,7 +218,7 @@ module ObservationReport
         consensus_name
         consensus_author
         consensus_rank
-        confidence
+        opinion
         location_id
         country
         state
@@ -251,7 +251,7 @@ module ObservationReport
         consensus_name         = clean_string(row[NAME_TEXT_NAME])
         consensus_author       = clean_string(row[NAME_AUTHOR])
         consensus_rank         = clean_rank(row[NAME_RANK])
-        confidence             = clean_float(row[OBS_VOTE_CACHE], 1, 100.0 / 3.0)
+        opinion                = clean_float(row[OBS_VOTE_CACHE], 1, 100.0 / 3.0)
         location_id            = clean_integer(row[LOC_ID])
         country, state, county, location = split_location(row[LOC_NAME])
         latitude               = clean_float(row[OBS_LAT], 4)
@@ -277,7 +277,7 @@ module ObservationReport
           consensus_name,
           consensus_author,
           consensus_rank,
-          confidence,
+          opinion,
           location_id,
           country,
           state,

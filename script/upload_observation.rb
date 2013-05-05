@@ -41,7 +41,7 @@ CODES = {
   'H'   => :habitat,
   'L'   => :location,
   'E'   => :altitude,
-  'C'   => :confidence,
+  'O'   => :opinion,
   'S'   => :source,
   'V'   => :voucher,
   'MO'  => :observation_id,
@@ -82,7 +82,7 @@ class Observation
   attr_accessor :habitat
   attr_accessor :substrate
   attr_accessor :aspect
-  attr_accessor :confidence
+  attr_accessor :opinion
   attr_accessor :vote
   attr_accessor :source
   attr_accessor :voucher
@@ -294,7 +294,7 @@ class Observation
     return val
   end
 
-  def parse_confidence(val)
+  def parse_opinion(val)
     case val
     when 'A', 'S' ; 3
     when 'R', 'T' ; 2
@@ -401,7 +401,7 @@ class Observation
       fh << format_editor_data(:longitude, longitude)
       fh << format_editor_data(:altitude, altitude)
       fh << format_editor_data(:name, name)
-      fh << format_editor_data(:vote, confidence)
+      fh << format_editor_data(:vote, opinion)
       fh << format_editor_data(:specimen, voucher ? 'yes' : 'no')
       for img in images
         val = captions[img].join(' ').strip rescue '2'

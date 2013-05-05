@@ -76,7 +76,7 @@ You can now enter latitude, longitude, and altitude in create and edit form,
 just like in observation forms.  (That means it accepts degrees-minutes-seconds
 and feet, like for observations, too.) 
 
-You can now explicitly state your confidence level for observations created via
+You can now explicitly state your opinion of names for observations created via
 the create species list form.  (It used to default variously to no vote at all
 or "I'd call it that".) 
 

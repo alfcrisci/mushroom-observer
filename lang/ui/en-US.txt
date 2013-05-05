@@ -174,10 +174,10 @@ CITATION: Citation
 citation: citation
 CITATIONS: Citations
 citations: citations
-CONFIDENCE_LEVEL: Confidence Level
-confidence_level: confidence level
-CONFIDENCE_LEVELS: Confidence Levels
-confidence_levels: confidence levels
+OPINION_LEVEL: Opinion
+opinion_level: opinion
+OPINION_LEVELS: Opinions
+opinion_levels: opinions
 COPYRIGHT_HOLDER: Copyright Holder
 copyright_holder: copyright holder
 COPYRIGHT_HOLDERS: Copyright Holders
@@ -696,13 +696,16 @@ site_stats_users: Members
 site_stats_votes: "[:VOTES]"
 
 # Vote descriptions.
+vote_confidence_high: High
+vote_confidence_medium: Medium
+vote_confidence_low: Low
 vote_no_opinion: No Opinion
-vote_confidence_100: I'd Call It That
-vote_confidence_80: Promising
-vote_confidence_60: Could Be
-vote_confidence_40: Doubtful
-vote_confidence_20: Not Likely
-vote_confidence_0: As If!
+vote_opinion_100: I'd Call It That
+vote_opinion_80: Promising
+vote_opinion_60: Could Be
+vote_opinion_40: Doubtful
+vote_opinion_20: Not Likely
+vote_opinion_0: As If!
 vote_agreement_100: I'd Call It That
 vote_agreement_80: Promising
 vote_agreement_60: Could Be
@@ -1148,7 +1151,7 @@ form_names_refs_help: Each line is considered a separate reference, but no other
 
 
 # observer/_form_naming
-form_naming_confidence: Confidence
+form_naming_opinion: Opinion
 form_naming_valid_synonyms: Valid synonyms are
 form_naming_deprecated: The name '[name]' is deprecated.
 form_naming_not_recognized: The name '[name]' was not recognized.
@@ -1160,7 +1163,7 @@ form_naming_correct_help: Did you mean one of the following names? [:form_naming
 form_naming_not_recognized_help: Click '[button]' to create this name or edit the name below to correct any typo.
 form_naming_multiple_names: Multiple names match '[name]'.  Select the one you intended.
 form_naming_multiple_names_help: The number after each name is how many observations are currently using that name.
-form_naming_confidence_help: How confident are you of this identification?  Please justify how you arrived at your decision in the boxes below, as well.
+form_naming_opinion_help: How confident are you of this identification?  Please justify how you arrived at your decision in the boxes below, as well.
 
 
 # observer/_form_observations
@@ -1194,7 +1197,7 @@ form_species_lists_species_to_add: Select Species to Add
 form_species_lists_write_in_species: "Write-In Species: (enter a name on each line)"
 form_species_lists_list_notes: Species List Notes
 form_species_lists_member_notes: Notes for each new member
-form_species_lists_confidence: Confidence in identifications
+form_species_lists_opinion: Opinion of identifications
 form_species_lists_deprecated: The following names are deprecated
 form_species_lists_deprecated_help: Select any names you would prefer to use.  If you prefer a name you entered then don't select one of the suggested synonyms.
 form_species_lists_multiple_names: Multiple names match each of the following entries
@@ -1391,7 +1394,7 @@ news_header: This page lists the latest changes to and news about the [:app_titl
 
 
 # shared/_observation_list
-observation_made_confidence: Community confidence
+observation_made_opinion: Community opinion
 
 
 
@@ -1624,7 +1627,6 @@ show_name_subtaxa_observations: Subtaxa [:OBSERVATIONS]
 show_name_creator: First person to use this name on MO
 show_name_editor: "[:Editors]"
 show_name_editors: "[:Editors]"
-show_name_other_observations_notes: "(Someone proposed [name] for these observations, but consensus hasn't accepted it.  Confidence value is for __this__ name, not the consensus name.)"
 show_name_nomenclature: Nomenclature
 show_name_classification: Classification
 show_name_brief_description: Brief Description
@@ -1638,9 +1640,9 @@ show_namings_propose_new_name: Propose Another Name
 show_namings_eye_help: Observer's choice
 show_namings_eyes_help: Current consensus
 show_namings_community_favorite: This is the community favorite.
-show_namings_consensus: Community Vote
+show_namings_consensus: Community Consensus
 show_namings_no_votes: no votes
-show_namings_your_vote: Your Vote
+show_namings_your_opinion: Your Opinion
 show_namings_update_votes: Update Votes
 show_namings_cast: Cast Vote
 show_namings_user: "[:User]"
@@ -2665,7 +2667,7 @@ refine_search_citation_has: Search citation
 refine_search_classification_has: Search classification
 refine_search_comment_types: Object type(s)
 refine_search_comments_has: Search comments
-refine_search_confidence: Confidence level
+refine_search_opinion: Opinion
 refine_search_content_has: Search message body
 refine_search_content_types: Original image type(s)
 refine_search_copyright_holder_has: Search copyright holder
@@ -2760,7 +2762,7 @@ refine_search_comment_types_help: ""
 refine_search_comments_has_help: "[:refine_search_google_help]"
 refine_search_content_has_help: "[:refine_search_google_help]"
 refine_search_conditions_help: Use the following conditions to narrow down your query results.  Only the fields in boldface are required (if any).  Results must match all of the conditions that are not left blank.  Many of the conditions accept a range or allow multiple values.  Syntax can be complicated; click on the [:refine_search_help] tags next to the fields for pointers on what kind of values are accepted.
-refine_search_confidence_help: This refers to the average confidence of the community to the current consensus name of the observation.
+refine_search_opinion_help: This refers to the average opinion of the community to the current consensus name of the observation.
 refine_search_content_types_help: All reduced sizes are JPEGs.  This only applies to the original image.  Most users upload JPEGs, however a small percentage are in other formats.
 refine_search_copyright_holder_has_help: ""
 refine_search_created_help: "[:refine_search_time_help]"
@@ -3570,15 +3572,15 @@ how_unknown_help: >
 
 how_adding_observations: "*Adding Observations You Have Identified* - Use the same process as \"Getting Help with an Unknown\":#unknown_help, except this time provide your identification in the '[:WHAT]' field.  You are strongly encouraged to say something about how you arrived at the identification.  We've provided a small set of checkboxes to make this easy ('[:naming_reason_label_1]', '[:naming_reason_label_3]', etc.), but you are encouraged to elaborate on them in the provided text fields (e.g., list the references you used, or enter 'sequenced the DNA and compared it against the data in GenBank'!). Community members will often post \"Comments\":#comment if there is some question about the collection or if they would like clarification as to why you ruled out other \"Names\":#name.  Roy Halling has provided beautifully illustrated presentations describing <a href=\"http://mushroomobserver.org/pdf/macro-features.pdf\">macroscopic</a> and <a href=\"http://mushroomobserver.org/pdf/micro-features.pdf\">microscopic</a> features. More documentation on creating scientifically valuable collections is available from the <a href=\"http://mycoportal.org/portal/misc/links.php\">MycoPortal Links Page</a>."
 
-how_proposing_names: >
+how_proposing_names_opinion: >
   *Proposing Names* - Any member of the community can propose "Names":#name for any "Observations":#observation.  Click an observation (e.g., from the '[:rss_log_title]' page) and scroll down below the observation notes.  There should be a list of "Proposed Names":#proposed_name enclosed in a thin outlined box.  Most observations will already have at least one proposed name (by the owner).  From here you may either click '[:show_namings_propose_new_name]' or "Vote":#voting on existing names.  In either case you will have to log in before you are allowed to do so.\n
   \n
-  When you click '[:show_namings_propose_new_name]' you will be presented with a form much like the one used to create an observation.  In addition to the name, you are required to choose a confidence level.  This is your "Vote":#vote, and you may change it on the '[:show_object(type=:observation)]' page at any time you like.  As with creating an observation, you are strongly encouraged to give some explanation as to why you think your Name applies to this Observation (and why other names don't).  When you are finished, click '[:CREATE]'.  You will be given a chance to correct typos or to choose an accepted name if you entered a deprecated one.\n
+  When you click '[:show_namings_propose_new_name]' you will be presented with a form much like the one used to create an observation.  In addition to the name, you are required to provide an opinion.  This is your "Vote":#vote, and you may change it on the '[:show_object(type=:observation)]' page at any time you like.  As with creating an observation, you are strongly encouraged to give some explanation as to why you think your Name applies to this Observation (and why other names don't).  When you are finished, click '[:CREATE]'.  You will be given a chance to correct typos or to choose an accepted name if you entered a deprecated one.\n
   \n
   Users are not allowed to propose a name if someone else has already done so. The only reason to do so would be to describe alternative reasons for reaching the same conclusion.  Instead use the discussion forum provided by comments to do this.\n
 
-how_voting: >
-  *Voting on Proposed Names* - Click an "Observation":#observation, e.g., from the '[:rss_log_title]' page, and scroll down to the '[:show_namings_proposed_names]' box.  Note that you must login before you can see or change any of your "Votes":#vote.  Once you have logged in, you should see pulldown menus next to each "Proposed Name":#proposed_name.  Your vote expresses the degree of confidence or agreement you have with placing that name on that observation.  Everything above '[min_neg_vote]' is considered a positive vote, everything below '[min_pos_vote]' negative. Choose '[no_opinion]' to tell it to delete your vote.  When you've changed all the votes you want to, be sure to click '[:show_namings_update_votes]' to record your votes.  Don't worry, if you forget and try to navigate away without casting your votes it will complain (unless you have Javascript disabled).\n
+how_voting_opinion: >
+  *Voting on Proposed Names* - Click an "Observation":#observation, e.g., from the '[:rss_log_title]' page, and scroll down to the '[:show_namings_proposed_names]' box.  Note that you must login before you can see or change any of your "Votes":#vote.  Once you have logged in, you should see pulldown menus next to each "Proposed Name":#proposed_name.  Your vote expresses your opinion of placing that name on that observation.  Everything above '[min_neg_vote]' is considered a positive vote, everything below '[min_pos_vote]' negative. Choose '[no_opinion]' to tell it to delete your vote.  When you've changed all the votes you want to, be sure to click '[:show_namings_update_votes]' to record your votes.  Don't worry, if you forget and try to navigate away without casting your votes it will complain (unless you have Javascript disabled).\n
   \n
   Roughly speaking, votes for a name are weighted, summed and then divided by the number of votes for that name.  The name with the highest score wins, and that name will be applied to that observation throughout the site.  In the case where multiple synonyms are proposed for an observation it lumps the votes together, choosing each user's strongest vote within that group of synonyms.  In the end, assuming that group of synonyms wins, the currently accepted name is used as the community consensus.  If there is still debate in the scientific community about which name is appropriate for a given taxon, then it will use votes the best it can to decide between multiple accepted names.  Note that the owner's vote automatically carries a little more weight, as do the votes of users who have made a large "Contribution":#contribution to [:app_title] or who are considered experts.  Click '[:app_contributors]' or click a user's name to see the contribution and expert status.  (We use the log base 10 of users' contributions.)\n
 
@@ -3637,7 +3639,7 @@ how_glossary_body: >
   #(#description)   [:how_description]\n
   #(#species_list)  [:how_species_list]\n
   #(#user)          [:how_user]\n
-  #(#vote)          [:how_vote]\n
+  #(#vote)          [:how_vote_opinion]\n
 
 how_comment: "*Comment* - Comments are the standard way to discuss an \"Observation\":#observation or its associated \"Images\":#image.  Each comment is owned by a particular \"User\":#user.  A comment may only be edited or deleted by the owner or a site administrator.  You can look up all comments that have been made about your observations by clicking on '\"[:show_user_comments_for_you]\":/comment/show_comments_for_user' in the left-hand panel."
 how_contribution: "*Contribution* - A number or score that measures the quantity and quality of contributions a \"User\":#user has made to [:app_title].  Click '[:app_your_summary]' to see a break-down of your own contribution.  You earn points for every \"Observation\":#observation, \"Image\":#image, \"Comment\":#comment, etc. you have posted.  \"Describing Species\":#describing_species and \"Defining Locations\":defining_locations are some of the most important contributions a user can make.  (See \"How To Help\":/observer/how_to_help for a list of other ways to help out.) Currently, contribution is used only in weighting your \"Votes\":#vote when voting on \"Proposed Names\":#proposed_names for observations."
@@ -3650,7 +3652,7 @@ how_observation: "*Observation* - A record of a single mushroom species at a par
 how_proposed_name: "*Proposed Name* - A \"Name\":#name as proposed for a given \"Observation\":#observation.  Any number of names may be proposed for a single observation by members of the community.  No special treatment is given to any member's name.  Community consensus is arrived at through the process of \"voting\":#voting.  Each proposed name for an observation is owned by a single \"User\":#user.  However, even the user who proposed the name cannot necessarily modify or delete a name once other members of the community have cast \"Votes\":#vote for or against it.  Fortunately you may always propose additional names.  There is never any sort of penalty associated with proposing incorrect names."
 how_species_list: "*Species List* - A list of \"Observations\":#observation (not \"Names\":#name). Includes a date, a \"Location\":#location and a title for the list.  A given species list is owned by a particular \"User\":#user.  Only the owner or a site administrator can change or delete a species list.  There are no strict rules for how species lists should be used.  This is an area that is likely to change in the future as the community comes up with clearer ideas for how they should be used."
 how_user: "*User* - An account on [:app_title].  You are required to provide a valid email address when you first create an account.  This allows the system to stop automated programs from creating bogus accounts.  It also provides a way for other users to get in touch with you.  However, your email address will never be revealed unless you request an email be sent to another user and then only to that user.  If you are concerned about having your email address in our database, once you have verified your account, you can go to the '\"[:app_preferences]\":/account/prefs' page and remove your address."
-how_vote: "*Vote* - One \"User's\":#user vote on a \"Proposed Name\":#proposed_name for a given \"Observation\":#observation.  Expresses a level of confidence or agreement with that name, with half the choices (\"[min_pos_vote]\" and up) being positive and half (\"[min_neg_vote]\" and below) being negative.  Votes are owned by that user, and can only be changed or deleted by the owner or a site administrator."
+how_vote_opinion: "*Vote* - One \"User's\":#user vote on a \"Proposed Name\":#proposed_name for a given \"Observation\":#observation.  Expresses an opinion of that name, with half the choices (\"[min_pos_vote]\" and up) being positive and half (\"[min_neg_vote]\" and below) being negative.  Votes are owned by that user, and can only be changed or deleted by the owner or a site administrator."
 
 ################################################################################
 
@@ -3804,7 +3806,7 @@ validate_user_password_too_long: "[:validate_too_long_or_short(field=:password,m
 validate_user_theme_too_long: "[:validate_too_long(field=''theme_name'',max=40)]"
 validate_vote_naming_missing: "[:validate_missing(field=:naming)]"
 validate_vote_user_missing: "[:validate_missing(field=:user)]"
-validate_vote_value_missing: "[:validate_missing(field=:confidence_level)]"
+validate_vote_value_missing: "[:validate_missing(field=:opinion_level)]"
 validate_vote_value_not_integer: "[:validate_not_a_number(field=:vote)]"
 validate_vote_value_out_of_bounds: "[:validate_not_in_range(field=:vote)]"
 
@@ -4287,7 +4289,7 @@ sort_by_login: "[:LOGIN_NAME]"
 sort_by_copyright_holder: "[:COPYRIGHT_HOLDER]"
 sort_by_where: "[:LOCATION]"
 sort_by_location: "[:LOCATION]"
-sort_by_confidence: "[:CONFIDENCE_LEVEL]"
+sort_by_opinion: "[:OPINION_LEVEL]"
 sort_by_image_quality: Image Quality
 sort_by_thumbnail_quality: Thumbnail Quality
 sort_by_num_views: Popularity

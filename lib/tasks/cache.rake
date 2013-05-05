@@ -12,18 +12,31 @@ namespace :cache do
   end
 
   desc "Recalculate vote caches for observations and namings"
-  task(:refresh_votes => :environment) do
+  task(:refresh_votes => [:refresh_namings, :refresh_observations]) do
+    print "Refreshed both namings and observations"
+  end
+  
+  desc "Recalcuate vote cache for namings"
+  task(:refresh_namings => :environment) do
     print "Refreshing naming.vote_cache...\n"
     for n in Naming.find(:all)
       print "##{n.id}\r"
       n.calc_vote_table
     end
+  end
+  
+  desc "Recalculate vote cache for observations"
+  task(:refresh_observations => :environment) do
     print "Refreshing observation.vote_cache...\n"
-    for o in Observation.find(:all)
+    min_oid = ENV["MIN_OBSERVATION"]
+    max_oid = ENV["MAX_OBSERVATION"]
+    conditions = []
+    conditions.push("id >= #{min_oid}") if min_oid
+    conditions.push("id <= #{max_oid}") if max_oid
+    for o in Observation.find(:all, :conditions => conditions.join(" and "))
       print "##{o.id}\r"
       o.calc_consensus
     end
-    print "Done.    \n"
   end
   
   desc "Reset the queued_emails flavor enum"

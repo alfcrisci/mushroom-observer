@@ -253,7 +253,7 @@ class AmateurTest < IntegrationTestCase
       form.submit
     end
     assert_template('observer/create_naming')
-    assert_flash(/confidence/i)
+    assert_flash(/opinion/i)
 
     open_form do |form|
       form.assert_value('name', text_name)

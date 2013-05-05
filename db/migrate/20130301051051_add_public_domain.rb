@@ -2,7 +2,7 @@ class AddPublicDomain < ActiveRecord::Migration
   def self.up
     pd = License.new
     pd.display_name = "Public Domain"
-    pd.url = 'http://wiki.creativecommons.org/Public_domain/'
+    pd.url = 'http://creativecommons.org/licenses/publicdomain/'
     pd.form_name = 'publicdomain'
     pd.deprecated = false
     pd.save

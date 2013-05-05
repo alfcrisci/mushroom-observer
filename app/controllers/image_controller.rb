@@ -142,7 +142,7 @@ class ImageController < ApplicationController
       # ['copyright_holder', :sort_by_copyright_holder.t],
       ['created',       :sort_by_posted.t],
       ['modified',      :sort_by_modified.t],
-      ['confidence',    :sort_by_confidence.t],
+      ['opinion',       :sort_by_opinion.t],
       ['image_quality', :sort_by_image_quality.t],
       ['num_views',     :sort_by_num_views.t],
     ]
@@ -793,13 +793,13 @@ class ImageController < ApplicationController
   ################################################################################
 
   def images_for_mushroom_app # :nologin: :norobots:
-    minimum_confidence = params[:minimum_confidence].blank? ? 1.5 : params[:minimum_confidence]
+    minimum_opinion = params[:minimum_opinion].blank? ? 1.5 : params[:minimum_opinion]
     minimum_quality = params[:minimum_quality].blank? ? 2.0 : params[:minimum_quality]
     target_width = params[:target_width].blank? ? 400 : params[:target_width]
     target_height = params[:target_height].blank? ? 600 : params[:target_height]
     minimum_width = params[:minimum_width].blank? ? target_width : params[:minimum_width]
     minimum_height = params[:minimum_height].blank? ? target_height : params[:minimum_height]
-    confidence_reward = params[:confidence_reward].blank? ? 2.0 : params[:confidence_reward]
+    opinion_reward = params[:opinion_reward].blank? ? 2.0 : params[:opinion_reward]
     quality_reward = params[:quality_reward].blank? ? 1.0 : params[:quality_reward]
     ratio_penalty = params[:ratio_penalty].blank? ? 0.5 : params[:ratio_penalty]
 
@@ -822,11 +822,11 @@ class ImageController < ApplicationController
         ) AS x, observations o, images i
         WHERE o.name_id = x.name_id
           AND i.id = o.thumb_image_id
-          AND o.vote_cache >= #{minimum_confidence}
+          AND o.vote_cache >= #{minimum_opinion}
           AND i.vote_cache >= #{minimum_quality}
           AND i.width >= #{minimum_width} AND i.height >= #{minimum_height}
         ORDER BY
-          o.vote_cache * #{confidence_reward} +
+          o.vote_cache * #{opinion_reward} +
           i.vote_cache * #{quality_reward} -
           ABS(LOG(width/height) - #{Math.log10(target_width.to_f/target_height)}) * #{ratio_penalty} DESC
       ) AS y

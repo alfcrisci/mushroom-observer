@@ -365,22 +365,22 @@ class NameController < ApplicationController
 
       # Create search queries for observation lists.
       @consensus_query = create_query(:Observation, :of_name, :name => @name,
-                                      :by => :confidence)
+                                      :by => :opinion)
       @consensus2_query = create_query(:Observation, :of_name, :name => @name,
                                        :synonyms => :all,
-                                       :by => :confidence)
+                                       :by => :opinion)
       @synonym_query = create_query(:Observation, :of_name, :name => @name,
                                     :synonyms => :exclusive,
-                                    :by => :confidence)
+                                    :by => :opinion)
       @other_query = create_query(:Observation, :of_name, :name => @name,
                                   :synonyms => :all, :nonconsensus => :exclusive,
-                                  :by => :confidence)
+                                  :by => :opinion)
       @obs_with_images_query = create_query(:Observation, :of_name, :name => @name,
-                                      :by => :confidence, :has_images => :yes)
+                                      :by => :opinion, :has_images => :yes)
                                   
       if @name.at_or_below_genus?
         @subtaxa_query = create_query(:Observation, :of_children, :name => @name,
-                                      :all => true, :by => :confidence)
+                                      :all => true, :by => :opinion)
       end
 
       # Determine which queries actually have results and instantiate the ones we'll use
@@ -1589,7 +1589,7 @@ class NameController < ApplicationController
 
   def names_for_mushroom_app # :nologin: :norobots:
     number_of_names = params[:number_of_names].blank? ? 1000 : params[:number_of_names]
-    minimum_confidence = params[:minimum_confidence].blank? ? 1.5 : params[:minimum_confidence]
+    minimum_opinion = params[:minimum_opinion].blank? ? 1.5 : params[:minimum_opinion]
     minimum_observations = params[:minimum_observations].blank? ? 5 : params[:minimum_observations]
     rank_condition = params[:include_higher_taxa].blank? ?
       '= "Species"' :
@@ -1607,7 +1607,7 @@ class NameController < ApplicationController
                  COUNT(o.id) AS number
           FROM names n, observations o
           WHERE o.name_id = n.id
-            AND o.vote_cache >= #{minimum_confidence}
+            AND o.vote_cache >= #{minimum_opinion}
           GROUP BY IF(n.synonym_id IS NULL, n.id, -n.synonym_id)
         ) AS x
         LEFT OUTER JOIN names n ON IF(x.synonym_id IS NULL, n.id = x.name_id, n.synonym_id = x.synonym_id)

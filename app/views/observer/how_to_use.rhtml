@@ -9,8 +9,8 @@
   <li id="searching"             ><%= :how_searching.tp           %></li>
   <li id="unknown_help"          ><%= :how_unknown_help.tp        %></li>
   <li id="adding_observations"   ><%= :how_adding_observations.tp %></li>
-  <li id="proposing_names"       ><%= :how_proposing_names.tp     %></li>    
-  <li id="voting"                ><%= :how_voting.tp(
+  <li id="proposing_names"       ><%= :how_proposing_names_opinion.tp     %></li>    
+  <li id="voting"                ><%= :how_voting_opinion.tp(
     :min_pos_vote => @min_pos_vote,
     :min_neg_vote => @min_neg_vote,
     :max_vote     => @maximum_vote,
@@ -37,7 +37,7 @@
   <li id="proposed_name"><%= :how_proposed_name.tp %></li>
   <li id="species_list" ><%= :how_species_list.tp  %></li>
   <li id="user"         ><%= :how_user.tp          %></li>
-  <li id="vote"         ><%= :how_vote.tp(
+  <li id="vote"         ><%= :how_vote_opinion.tp(
     :min_pos_vote => @min_pos_vote,
     :min_neg_vote => @min_neg_vote,
     :max_vote     => @maximum_vote,

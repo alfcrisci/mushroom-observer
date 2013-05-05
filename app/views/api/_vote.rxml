@@ -3,7 +3,7 @@ xml.send(tag,
   :url => object.show_url,
   :type => 'vote'
 ) do
-  xml_confidence_level(xml, :confidence, object.value)
+  xml_opinion_level(xml, :opinion, object.value)
   if detail
     xml_datetime(xml, :created, object.created)
     xml_datetime(xml, :modified, object.modified)

@@ -22,7 +22,7 @@
     data = []
     sum = 0
     for name2 in [name] + approved_synonyms
-      query = Query.lookup(:Observation, :of_name, :name => name2, :by => :confidence)
+      query = Query.lookup(:Observation, :of_name, :name => name2, :by => :opinion)
       count = query.select_count
       if count > 0
         sum += count
@@ -43,7 +43,7 @@
       end
     end
 
-    query = Query.lookup(:Observation, :of_name, :name => name, :by => :confidence,
+    query = Query.lookup(:Observation, :of_name, :name => name, :by => :opinion,
                          :synonyms => :all)
     count = query.select_count
     query.save
@@ -57,7 +57,7 @@
                " (#{count})"
     end
 
-    query = Query.lookup(:Observation, :of_name, :name => name, :by => :confidence,
+    query = Query.lookup(:Observation, :of_name, :name => name, :by => :opinion,
                          :synonyms => :all, :nonconsensus => :exclusive)
     count = query.select_count
     if count > 0

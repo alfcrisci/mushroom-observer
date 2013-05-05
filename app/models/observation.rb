@@ -373,6 +373,25 @@ class Observation < AbstractModel
     Vote.percent(vote_cache)
   end
 
+  def latest_max_vote
+    result = nil
+    value = Vote.minimum_vote - 1
+    mod = self.created
+    for v in self.votes
+      if v.value > value
+        result = v
+        value = v.value
+        mod = v.modified
+      elsif v.value == value
+        if mod.nil? or v.modified >= mod
+          mod = v.modified
+          result = v
+        end
+      end
+    end
+    result
+  end
+  
   # Change User's Vote for this naming.  Automatically recalculates the
   # consensus for the Observation in question if anything is changed.  Returns
   # true if something was changed.
@@ -1017,10 +1036,12 @@ return result if debug
     end
 
     # Send notification to all except the person who triggered the change.
-    for recipient in recipients.uniq - [sender]
-      if recipient.created_here
-        QueuedEmail::ConsensusChange.create_email(sender, recipient,
-                                                  self, old_name, new_name)
+    if sender
+      for recipient in recipients.uniq - [sender]
+        if recipient.created_here
+          QueuedEmail::ConsensusChange.create_email(sender, recipient,
+                                                    self, old_name, new_name)
+        end
       end
     end
   end

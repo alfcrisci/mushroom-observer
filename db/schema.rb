@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422003746) do
+ActiveRecord::Schema.define(:version => 20130512012033) do
 
   create_table "api_keys", :force => true do |t|
     t.datetime "created"
@@ -420,6 +420,7 @@ ActiveRecord::Schema.define(:version => 20130422003746) do
     t.decimal  "long",                                   :precision => 15, :scale => 10
     t.string   "where",                  :limit => 1024
     t.integer  "alt"
+    t.integer  "latest_vote_id"
   end
 
   create_table "observations_projects", :id => false, :force => true do |t|

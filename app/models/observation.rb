@@ -129,6 +129,7 @@ class Observation < AbstractModel
   belongs_to :location
   belongs_to :rss_log
   belongs_to :user
+  belongs_to :latest_vote, :class_name => "Vote", :foreign_key => 'latest_vote_id'
 
   has_many :votes
   has_many :comments,  :as => :target, :dependent => :destroy

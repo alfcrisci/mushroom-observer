@@ -30,12 +30,24 @@ namespace :cache do
     print "Refreshing observation.vote_cache...\n"
     min_oid = ENV["MIN_OBSERVATION"]
     max_oid = ENV["MAX_OBSERVATION"]
-    conditions = []
+    conditions = ["user_id != 0"]
     conditions.push("id >= #{min_oid}") if min_oid
     conditions.push("id <= #{max_oid}") if max_oid
     for o in Observation.find(:all, :conditions => conditions.join(" and "))
       print "##{o.id}\r"
       o.calc_consensus
+    end
+  end
+  
+  desc "Report namings for observations"
+  task(:report_observations => :environment) do
+    min_oid = ENV["MIN_OBSERVATION"]
+    max_oid = ENV["MAX_OBSERVATION"]
+    conditions = ["user_id != 0"]
+    conditions.push("id >= #{min_oid}") if min_oid
+    conditions.push("id <= #{max_oid}") if max_oid
+    for o in Observation.find(:all, :conditions => conditions.join(" and "))
+      print "#{o.id}\t#{o.name_id}\t#{o.name.search_name}\n"
     end
   end
   

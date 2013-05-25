@@ -302,6 +302,18 @@ class Naming < AbstractModel
     return table
   end
 
+  def refresh_vote_cache
+    total = 0
+    total_weight = 0
+    for v in votes
+      weight = v.user_weight
+      weight += 1 if v.observation.latest_vote == v
+      total += v.value * weight
+      total_weight += weight
+    end
+    self.vote_cache = total.to_f / (total_weight + 1.0)
+  end
+  
   ##############################################################################
   #
   #  :section: Reasons

@@ -163,13 +163,14 @@ class LocationControllerTest < FunctionalTestCase
 
   # Test a simple location creation.
   def test_construct_location_simple
+    contribution = @rolf.contribution
     count = Location.count
     params = barton_flats_params
     display_name = params[:display_name]
     post_requires_login(:create_location, params)
     assert_response(:action => :show_location)
     assert_equal(count + 1, Location.count)
-    assert_equal(10 + @new_pts, @rolf.reload.contribution)
+    assert_equal(contribution + @new_pts, @rolf.reload.contribution)
     loc = assigns(:location)
     assert_equal(display_name, loc.display_name) # Make sure it's the right Location
     loc = Location.find_by_name_or_reverse_name(display_name)
@@ -257,7 +258,7 @@ class LocationControllerTest < FunctionalTestCase
   def test_update_location
     count = Location::Version.count
     count2 = LocationDescription::Version.count
-    assert_equal(10, @rolf.reload.contribution)
+    contribution = @rolf.contribution
 
     # Turn Albion into Barton Flats.
     loc = locations(:albion)
@@ -268,7 +269,7 @@ class LocationControllerTest < FunctionalTestCase
     params[:id] = loc.id
     post_requires_login(:edit_location, params)
     assert_response(:action => :show_location)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
 
     # Should have created a new version of location only.
     assert_equal(count + 1, Location::Version.count)
@@ -353,6 +354,7 @@ class LocationControllerTest < FunctionalTestCase
 
   # Burbank has observations so it stays.
   def test_update_location_user_merge
+    contribution = @rolf.contribution
     to_go = locations(:burbank)
     to_stay = locations(:albion)
     params = update_params_from_loc(to_go)
@@ -367,7 +369,7 @@ class LocationControllerTest < FunctionalTestCase
     assert_equal(desc_count, LocationDescription.count)
     assert_equal(past_loc_count-1, Location::Version.count)
     assert_equal(past_desc_count, LocationDescription::Version.count)
-    assert_equal(10 - @new_pts, @rolf.reload.contribution)
+    assert_equal(contribution - @new_pts, @rolf.reload.contribution)
   end
 
   def test_update_location_admin_merge

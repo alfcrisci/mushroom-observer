@@ -3,6 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../boot.rb')
 
 class DescriptionTest < UnitTestCase
 
+  def current_contributions(users)
+    users.map {|u| u.contribution}
+  end
+  
   # Make sure authors and editors are as they should be.
   def assert_authors_and_editors(obj, authors, editors, msg)
     assert_equal(authors.sort, obj.authors.map(&:login).sort, 'Authors wrong: ' + msg)
@@ -10,14 +14,9 @@ class DescriptionTest < UnitTestCase
   end
 
   # Make sure author/editor callbacks are updating contributions right.
-  def assert_contributions(rolf, mary, dick, katrina, msg)
-    for score, user in [
-      [rolf, @rolf],
-      [mary, @mary],
-      [dick, @dick],
-      [katrina, @katrina],
-    ]
-      assert_equal(10+score, user.reload.contribution,
+  def assert_contributions(users, starts, increments, msg)
+    for user, start, increment in users.zip(starts, increments)
+      assert_equal(start+increment, user.reload.contribution,
                    "Contribution for #{user.login} wrong: " + msg)
     end
   end
@@ -29,6 +28,8 @@ class DescriptionTest < UnitTestCase
   # ------------------------------------------------------------------
 
   def test_authors_and_editors
+    users = [@rolf, @mary, @dick, @katrina]
+    initial_contributions = current_contributions(users)
     for model in [LocationDescription, NameDescription]
       case model.name
       when 'LocationDescription'
@@ -43,14 +44,14 @@ class DescriptionTest < UnitTestCase
 
       msg = "#{model}: Initial conditions."
       assert_authors_and_editors(obj, [], [], msg)
-      assert_contributions(0, 0, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [0, 0, 0, 0], msg)
 
       # Have Rolf create minimal object.
       User.current = @rolf
       assert_save(obj)
       msg = "#{model}: Rolf should not be made author after minimal create."
       assert_authors_and_editors(obj, [], ['rolf'], msg)
-      assert_contributions(e, 0, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [e, 0, 0, 0], msg)
 
       # Have Rolf make a trivial change.
       User.current = @rolf
@@ -58,7 +59,7 @@ class DescriptionTest < UnitTestCase
       obj.save
       msg = "#{model}: Rolf should still be editor after trivial change."
       assert_authors_and_editors(obj, [], ['rolf'], msg)
-      assert_contributions(e, 0, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [e, 0, 0, 0], msg)
 
       # Delete editors and author so we can test changes to old object that
       # is grandfathered in without any editors or authors.
@@ -68,7 +69,7 @@ class DescriptionTest < UnitTestCase
       obj.editors.clear
       msg = "#{model}: Just deleted authors and editors."
       assert_authors_and_editors(obj, [], [], msg)
-      assert_contributions(0, 0, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [0, 0, 0, 0], msg)
 
       # Now have Mary make a trivial change.  Should have same result as when
       # creating above.
@@ -77,7 +78,7 @@ class DescriptionTest < UnitTestCase
       obj.save
       msg = "#{model}: Mary should not be made author after trivial change to authorless object."
       assert_authors_and_editors(obj, [], ['mary'], msg)
-      assert_contributions(0, e, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [0, e, 0, 0], msg)
 
       # Now have Dick make a non-trivial change.
       obj.send(set_nontrivial, 'This is weighty stuff...')
@@ -85,7 +86,7 @@ class DescriptionTest < UnitTestCase
       obj.save
       msg = "#{model}: No authors, so Dick should become author."
       assert_authors_and_editors(obj, ['dick'], ['mary'], msg)
-      assert_contributions(0, e, a, 0, msg)
+      assert_contributions(users, initial_contributions, [0, e, a, 0], msg)
 
       # Now have Katrina make another non-trivial change.
       obj.send(set_nontrivial, 'This is even weightier stuff...')
@@ -93,7 +94,7 @@ class DescriptionTest < UnitTestCase
       obj.save
       msg = "#{model}: Already authors, so Katrina should become editor."
       assert_authors_and_editors(obj, ['dick'], ['mary', 'katrina'], msg)
-      assert_contributions(0, e, a, e, msg)
+      assert_contributions(users, initial_contributions, [0, e, a, e], msg)
 
       # Now force Dick and Mary both to be both authors and editors.
       # Should equalize the two cases at last.
@@ -103,18 +104,18 @@ class DescriptionTest < UnitTestCase
       obj.add_editor(@mary)
       msg = "#{model}: Both Dick and Mary were just made authors supposedly."
       assert_authors_and_editors(obj, ['dick', 'mary'], ['katrina'], msg)
-      assert_contributions(0, a, a, e, msg)
+      assert_contributions(users, initial_contributions, [0, a, a, e], msg)
 
       # And demote an author to test last feature.
       obj.remove_author(@dick)
       msg = "#{model}: Dick was just demoted supposedly."
       assert_authors_and_editors(obj, ['mary'], ['dick', 'katrina'], msg)
-      assert_contributions(0, a, e, e, msg)
+      assert_contributions(users, initial_contributions, [0, a, e, e], msg)
 
       # Delete it to restore all contributions.
       obj.destroy
       msg = "#{model}: Just deleted the object."
-      assert_contributions(0, 0, 0, 0, msg)
+      assert_contributions(users, initial_contributions, [0, 0, 0, 0], msg)
     end
   end
 end

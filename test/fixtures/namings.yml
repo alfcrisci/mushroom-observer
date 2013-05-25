@@ -82,3 +82,38 @@ coprinus_comatus_other_naming:
   observation_id: 3
   reasons: "---\n1: \"\"\n2: I asked *Uncle Herb*\n"
 
+rolf_morchella_angusticeps_naming:
+  id: 10
+  sync_id: 10xx1
+  created: 2013-05-11 11:04:15
+  modified: 2013-05-11 11:04:15
+  user_id: 1
+  name_id: 50
+  observation_id: 13
+
+mary_morchella_naming:
+  id: 11
+  sync_id: 11xx1
+  created: 2013-05-11 15:50:30
+  modified: 2013-05-11 15:50:30
+  user_id: 2
+  name_id: 52
+  observation_id: 13
+
+roy_morchella_importuna_naming:
+  id: 12
+  sync_id: 12xx1
+  created: 2013-05-11 15:40:30
+  modified: 2013-05-11 15:40:30
+  user_id: 6
+  name_id: 51
+  observation_id: 13
+
+katrina_morchella_angusticeps_naming:
+  id: 13
+  sync_id: 13xx1
+  created: 2013-05-11 20:57:27
+  modified: 2013-05-11 20:57:27
+  user_id: 5
+  name_id: 50
+  observation_id: 13

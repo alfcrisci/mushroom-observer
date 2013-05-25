@@ -245,6 +245,7 @@ class ImageControllerTest < FunctionalTestCase
   end
 
   def test_update_licenses
+    contribution = @rolf.contribution
     example_image    = images(:agaricus_campestris_image)
     user_id          = example_image.user_id
     copyright_holder = example_image.copyright_holder
@@ -272,7 +273,7 @@ class ImageControllerTest < FunctionalTestCase
     }
     post_requires_login(:license_updater, params)
     assert_response('license_updater')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
 
     target_count_after = Image.find_all_by_user_id_and_license_id_and_copyright_holder(user_id, target_license.id, copyright_holder).length
     new_count_after    = Image.find_all_by_user_id_and_license_id_and_copyright_holder(user_id, new_license.id, copyright_holder).length
@@ -324,9 +325,10 @@ class ImageControllerTest < FunctionalTestCase
       :id => obs.id.to_s,
       :selected => selected
     }
+    contribution = @mary.contribution
     post_requires_login(:remove_images, params, 'mary')
     assert_response(:controller => :observer, :action => :show_observation)
-    assert_equal(10, @mary.reload.contribution)
+    assert_equal(contribution, @mary.reload.contribution)
     assert(obs.reload.images.member?(keep))
     assert(!obs.images.member?(remove))
     assert_equal(keep.id, obs.thumb_image_id)
@@ -339,9 +341,7 @@ class ImageControllerTest < FunctionalTestCase
     }
     post(:remove_images, params)
     assert_response(:controller => "observer", :action => "show_observation")
-    # Observation gets downgraded to 1 point because it no longer has any images.
-    # assert_equal(1, @mary.reload.contribution)
-    assert_equal(10, @mary.reload.contribution)
+    assert_equal(contribution, @mary.reload.contribution)
     assert(!obs.reload.images.member?(keep))
     assert_equal(nil, obs.thumb_image_id)
   end
@@ -352,9 +352,10 @@ class ImageControllerTest < FunctionalTestCase
     assert(obs.images.member?(image))
     params = { :id => image.id.to_s }
     assert_equal('mary', image.user.login)
+    contribution = image.user.contribution
     requires_user(:destroy_image, :show_image, params, 'mary')
     assert_response(:action => :list_images)
-    assert_equal(0, @mary.reload.contribution)
+    assert_equal(contribution - 10, @mary.reload.contribution)
     assert(!obs.reload.images.member?(image))
   end
 
@@ -367,6 +368,7 @@ class ImageControllerTest < FunctionalTestCase
   end
 
   def test_update_image
+    contribution = @rolf.contribution
     image = images(:agaricus_campestris_image)
     obs = image.observations.first
     assert(obs)
@@ -386,7 +388,7 @@ class ImageControllerTest < FunctionalTestCase
     }
     post_requires_login(:edit_image, params)
     assert_response(:action => :show_image)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
 
     assert(obs.reload.rss_log)
     assert(obs.rss_log.notes.include?('log_image_updated'))
@@ -434,6 +436,7 @@ class ImageControllerTest < FunctionalTestCase
   end
 
   def test_upload_image
+    contribution = @rolf.contribution
     setup_image_dirs
     obs = observations(:coprinus_comatus_obs)
     proj = projects(:bolete_project)
@@ -465,7 +468,7 @@ class ImageControllerTest < FunctionalTestCase
     }
     post_requires_user(:add_image, [:observer, :show_observation], params)
     assert_response(:controller => :observer, :action => :show_observation)
-    assert_equal(20, @rolf.reload.contribution)
+    assert_equal(contribution + 10, @rolf.reload.contribution)
     assert(obs.reload.images.size == (img_count + 1))
     message = :runtime_image_uploaded_image.t(:name => '#' + obs.images.last.id.to_s)
     assert_flash(/#{message}/)

@@ -558,6 +558,7 @@ class NameControllerTest < FunctionalTestCase
   # ----------------------------
 
   def test_create_name_post
+    contribution = @rolf.contribution
     text_name = "Amanita velosa"
     author = "Lloyd"
     name = Name.find_by_text_name(text_name)
@@ -573,7 +574,7 @@ class NameControllerTest < FunctionalTestCase
     post_requires_login(:create_name, params)
     assert_response(:action => :show_name, :id => Name.last.id)
     # Amanita baccata is in there but not Amanita sp., so this creates two names.
-    assert_equal(10 + 2 * @new_pts, @rolf.reload.contribution)
+    assert_equal(contribution + 2 * @new_pts, @rolf.reload.contribution)
     assert(name = Name.find_by_text_name(text_name))
     assert_equal(text_name, name.text_name)
     assert_equal(author, name.author)
@@ -581,6 +582,7 @@ class NameControllerTest < FunctionalTestCase
   end
 
   def test_create_name_existing
+    contribution = @rolf.contribution
     name = names(:conocybe_filaris)
     text_name = name.text_name
     count = Name.count
@@ -598,7 +600,7 @@ class NameControllerTest < FunctionalTestCase
     assert_equal(count, Name.count, "Shouldn't have created a name; created #{Name.last.search_name.inspect}.")
     names = Name.find_all_by_text_name(text_name)
     assert_obj_list_equal([names(:conocybe_filaris)], names)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
   end
 
   def test_create_name_bad_name
@@ -710,6 +712,7 @@ class NameControllerTest < FunctionalTestCase
   # ----------------------------
 
   def test_edit_name_post
+    contribution = @rolf.contribution
     name = names(:conocybe_filaris)
     assert_equal('Conocybe filaris', name.text_name)
     assert_blank(name.author)
@@ -730,7 +733,7 @@ class NameControllerTest < FunctionalTestCase
     assert_response(:action => :show_name)
     # No more email for filling in author.
     # assert_notify_email('Conocybe filaris', 'Conocybe filaris (Fr.) Kühner')
-    assert_equal(20, @rolf.reload.contribution)
+    assert_equal(contribution + 10, @rolf.reload.contribution)
     assert_equal('(Fr.) Kühner', name.reload.author)
     assert_equal('**__Conocybe filaris__** (Fr.) Kühner', name.display_name)
     assert_equal('Conocybe filaris (Fr.) Kühner', name.search_name)
@@ -741,6 +744,7 @@ class NameControllerTest < FunctionalTestCase
   # This catches a bug that was happening when editing a name that was in use.
   # In this case text_name and author are missing, confusing edit_name.
   def test_edit_name_post_not_changeable
+    contribution = @rolf.contribution
     name = names(:conocybe_filaris)
     params = {
       :id => name.id,
@@ -759,7 +763,7 @@ class NameControllerTest < FunctionalTestCase
     assert_equal('__Le Genera Galera__, 139. 1935.', name.citation)
     assert_equal(@rolf, name.user)
     assert_equal('Conocybe', Name.last.search_name)
-    assert_equal(20, @rolf.reload.contribution) # created Conocybe
+    assert_equal(contribution + 10, @rolf.reload.contribution) # created Conocybe
   end
 
   def test_edit_name_post_just_change_notes
@@ -780,13 +784,13 @@ class NameControllerTest < FunctionalTestCase
 
       },
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:edit_name, params)
     assert_flash_success
     assert_response(:action => :show_name)
     assert_no_emails
     # It's implicitly creating Conocybe, because not in fixtures.
-    assert_equal(10 + @new_pts, @rolf.reload.contribution)
+    assert_equal(contribution + @new_pts, @rolf.reload.contribution)
     assert_equal(new_notes, name.reload.notes)
     assert_equal(past_names + 1, name.versions.size)
   end
@@ -805,13 +809,13 @@ class NameControllerTest < FunctionalTestCase
         :deprecated => (name.deprecated ? "true" : "false")
       },
     }
-    login('mary')
+    contribution = login('mary').contribution
     post(:edit_name, params)
     assert_flash_success
     assert_response(:action => :show_name)
     assert_no_emails
     # (creates Lactarius since it's not in the fixtures, AND it changes L. alpigenes)
-    assert_equal(10 + @new_pts + @chg_pts, @mary.reload.contribution)
+    assert_equal(contribution + @new_pts + @chg_pts, @mary.reload.contribution)
     assert(name.reload.deprecated)
     assert_equal('new citation', name.citation)
   end
@@ -832,7 +836,7 @@ class NameControllerTest < FunctionalTestCase
         :deprecated => (name.deprecated ? "true" : "false")
       },
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:edit_name, params)
     # Hmmm, this isn't catching the fact that Rolf shouldn't be allowed to
     # change the name, instead it seems to be doing nothing simply because he's
@@ -841,7 +845,7 @@ class NameControllerTest < FunctionalTestCase
     assert_response(:action => :show_name)
     assert_no_emails
     # (In fact, it is even implicitly creating Macrolepiota!)
-    assert_equal(10 + @new_pts, @rolf.reload.contribution)
+    assert_equal(contribution + @new_pts, @rolf.reload.contribution)
     # (But owner remains of course.)
     assert_equal(name_owner, name.reload.user)
   end
@@ -1334,14 +1338,14 @@ class NameControllerTest < FunctionalTestCase
         :deprecated => (name.deprecated ? "true" : "false")
       },
     }
-    login('mary')
+    contribution = login('mary').contribution
     post(:edit_name, params)
     assert_flash_success
     assert_response(:action => :show_name)
     # No more email for filling in author.
     # assert_notify_email(old_text_name, "#{old_text_name} #{new_author}")
     # It seems to be creating Strobilurus as well?
-    assert_equal(10 + @new_pts + @chg_pts, @mary.reload.contribution)
+    assert_equal(contribution + @new_pts + @chg_pts, @mary.reload.contribution)
     assert_equal(new_author, name.reload.author)
     assert_equal(old_text_name, name.text_name)
   end
@@ -1852,6 +1856,7 @@ class NameControllerTest < FunctionalTestCase
   # ----------------------------
 
   def test_update_bulk_names_nn_synonym
+    contribution = @rolf.contribution
     new_name_str = "Amanita fergusonii"
     assert_nil(Name.find_by_text_name(new_name_str))
     new_synonym_str = "Amanita lanei"
@@ -1863,7 +1868,7 @@ class NameControllerTest < FunctionalTestCase
     assert_response('bulk_name_edit')
     assert_nil(Name.find_by_text_name(new_name_str))
     assert_nil(Name.find_by_text_name(new_synonym_str))
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
   end
 
   def test_update_bulk_names_approved_nn_synonym

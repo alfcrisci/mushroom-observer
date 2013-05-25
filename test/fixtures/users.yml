@@ -10,7 +10,7 @@ rolf:
   auth_code: cb0b1a56ab378a7c4f8ecd172dccf8b3c4a7f0ba
   email: rolf@collectivesource.com
   verified: 2006-03-02 21:14:00
-  contribution: 10
+  contribution: 100
   created_here: true
   locale: en-US
   thumbnail_size: :thumbnail
@@ -93,7 +93,7 @@ roy:
   auth_code: cb0b1a56ab378a7c4f8ecd172dccf8b3c4a7f0ba
   email: roy@collectivesource.com
   verified: 2010-07-15 21:20:00
-  contribution: 10
+  contribution: 100
   created_here: true
   locale: en-US
   thumbnail_size: :thumbnail

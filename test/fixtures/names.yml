@@ -883,3 +883,51 @@ hygrocybe_russocoriacea_good_author:
   display_name: '**__Hygrocybe russocoriacea__** (Berk. & Jos.K. Mill.) P.D. Orton & Watling'
   author: '(Berk. & Jos.K. Mill.) P.D. Orton & Watling'
   notes: NULL
+
+morchella_angusticeps:
+  id: 50
+  sync_id: 50xx1
+  created: 2013-05-11 15:43:11
+  modified: 2013-05-11 15:43:11
+  user_id: 1
+  version: 1
+  rank: Species
+  text_name: Morchella angusticeps
+  author: 'Peck'
+  display_name: '**__Morchella angusticeps__** Peck'
+  search_name: Morchella angusticeps Peck
+  sort_name: Morchella angusticeps Peck
+  citation: ''
+  notes: ''
+
+morchella_importuna:
+  id: 51
+  sync_id: 51xx1
+  created: 2013-05-11 15:43:11
+  modified: 2013-05-11 15:43:11
+  user_id: 1
+  version: 1
+  rank: Species
+  text_name: Morchella importuna
+  author: "M. Kuo, O'Donnell & T.J. Volk"
+  display_name: "**__Morchella angusticeps__** M. Kuo, O'Donnell & T.J. Volk"
+  search_name: "Morchella importuna M. Kuo, O'Donnell & T.J. Volk"
+  sort_name: "Morchella importuna M. Kuo, O'Donnell & T.J. Volk"
+  citation: ''
+  notes: ''
+
+morchella:
+  id: 52
+  sync_id: 52xx1
+  created: 2013-05-11 15:43:11
+  modified: 2013-05-11 15:43:11
+  user_id: 1
+  version: 1
+  rank: Genus
+  text_name: Morchella
+  author: 'Dill. ex Pers.'
+  display_name: '**__Morchella__** Dill. ex Pers.'
+  search_name: Morchella angusticeps Dill. ex Pers.
+  sort_name: Morchella angusticeps Dill. ex Pers.
+  citation: ''
+  notes: ''

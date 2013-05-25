@@ -42,16 +42,17 @@ class CommentControllerTest < FunctionalTestCase
     obs = comment.target
     assert(obs.comments.member?(comment))
     assert_equal("rolf", comment.user.login)
+    contribution = comment.user.contribution
     params = {"id" => comment.id.to_s}
     requires_user(:destroy_comment, ['observer', 'show_observation'], params)
     assert_response(:controller => :observer, :action => :show_observation)
-    assert_equal(9, @rolf.reload.contribution)
+    assert_equal(contribution - 1, @rolf.reload.contribution)
     obs.reload
     assert(!obs.comments.member?(comment))
   end
 
   def test_save_comment
-    assert_equal(10, @rolf.contribution)
+    contribution = @rolf.contribution
     obs = observations(:minimal_unknown)
     comment_count = obs.comments.size
     params = {
@@ -64,7 +65,7 @@ class CommentControllerTest < FunctionalTestCase
     }
     post_requires_login(:add_comment, params)
     assert_response(:controller => :observer, :action => :show_observation)
-    assert_equal(11, @rolf.reload.contribution)
+    assert_equal(contribution + 1, @rolf.reload.contribution)
     obs.reload
     assert_equal(comment_count + 1, obs.comments.size)
     comment = Comment.last
@@ -82,8 +83,9 @@ class CommentControllerTest < FunctionalTestCase
       }
     }
     assert("rolf" == comment.user.login)
+    contribution = comment.user.contribution
     post_requires_user(:edit_comment, ['observer', 'show_observation'], params)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     comment = Comment.find(comment.id)
     assert_equal("New Summary", comment.summary)
     assert_equal("New text.",   comment.comment)

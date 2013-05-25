@@ -3,51 +3,35 @@ require File.expand_path(File.dirname(__FILE__) + '/../boot.rb')
 
 class ChecklistTest < UnitTestCase
 
-  def katrinas_species
-    ['Conocybe filaris']
-  end
-
-  def rolfs_species
-    [
-      'Agaricus campestras', # these are not synonymized
-      'Agaricus campestris',
-      'Agaricus campestros',
-      'Agaricus campestrus',
-      'Coprinus comatus',
-      'Strobilurus diminutivus',
-    ]
-  end
-
   def genera(species)
     species.map {|name| name.split(' ', 2).first}.uniq
   end
 
   def test_checklist_for_site
     data = Checklist::ForSite.new
-    all_species = (rolfs_species + katrinas_species).sort
-    all_genera = genera(all_species)
-    assert_equal(all_genera, data.genera)
-    assert_equal(all_species, data.species)
+    assert(data.genera.length > 0)
+    assert(data.species.length > 0)
   end
 
   def test_checklist_for_users
+    for_site = Checklist::ForSite.new
+    
     data = Checklist::ForUser.new(@mary)
     assert_equal(0, data.num_genera)
     assert_equal(0, data.num_species)
     assert_equal([], data.genera)
     assert_equal([], data.species)
+    assert(for_site.contains(data))
 
     data = Checklist::ForUser.new(@katrina)
-    assert_equal(1, data.num_genera)
-    assert_equal(1, data.num_species)
-    assert_equal(genera(katrinas_species), data.genera)
-    assert_equal(katrinas_species, data.species)
+    assert(data.num_genera >= 1)
+    assert(data.num_species >= 1)
+    assert(for_site.contains(data))
 
     data = Checklist::ForUser.new(@rolf)
-    assert_equal(3, data.num_genera)
-    assert_equal(6, data.num_species)
-    assert_equal(genera(rolfs_species), data.genera)
-    assert_equal(rolfs_species, data.species)
+    assert(data.num_genera >= 3)
+    assert(data.num_species >= 6)
+    assert(for_site.contains(data))
 
     User.current = @dick
     Observation.create!(:name => names(:agaricus))

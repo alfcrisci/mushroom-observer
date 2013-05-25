@@ -1,6 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-albion:
+albion: # DO NOT ATTACH TO MORE THINGS
   id: 1
   description_id: 1
   sync_id: 1xx1

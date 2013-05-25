@@ -70,3 +70,47 @@ amateur_vote:
   value: 2
   favorite: true
   observation_id: 11
+
+rolf_coprinus_comatus_vote:
+  id: 7
+  sync_id: 7xx1
+  created: 2013-05-12 09:05:30
+  modified: 2013-05-12 09:05:30
+  user_id: 1
+  naming_id: 10
+  value: 3
+  favorite: true
+  observation_id: 13
+
+mary_coprinus_vote:
+  id: 8
+  sync_id: 8xx1
+  created: 2013-05-12 09:06:00
+  modified: 2013-05-12 09:06:00
+  user_id: 2
+  naming_id: 11
+  value: 3
+  favorite: true
+  observation_id: 13
+
+roy_coprinus_calyptratus_vote:
+  id: 9
+  sync_id: 9xx1
+  created: 2013-05-12 09:06:15
+  modified: 2013-05-12 09:06:15
+  user_id: 6
+  naming_id: 12
+  value: 3
+  favorite: true
+  observation_id: 13
+
+katrina_coprinus_comatus_vote:
+  id: 10
+  sync_id: 10xx1
+  created: 2013-05-12 09:06:30
+  modified: 2013-05-12 09:06:30
+  user_id: 5
+  naming_id: 13
+  value: 3
+  favorite: true
+  observation_id: 13

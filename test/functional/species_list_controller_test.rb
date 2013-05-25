@@ -230,6 +230,7 @@ class SpeciesListControllerTest < FunctionalTestCase
 
   # Test constructing species lists in various ways.
   def test_construct_species_list
+    contribution = login('rolf').contribution
     list_title = "List Title"
     params = {
       :list => { :members => names(:coprinus_comatus).text_name },
@@ -245,7 +246,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     }
     post_requires_login(:create_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     assert(spl.name_included(names(:coprinus_comatus)))
@@ -296,10 +297,10 @@ class SpeciesListControllerTest < FunctionalTestCase
         :notes => "List Notes"
       }
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     assert(spl.name_included(agaricus))
@@ -325,11 +326,11 @@ class SpeciesListControllerTest < FunctionalTestCase
       },
       :approved_names => new_list_str
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
     # Creates Agaricaceae, spl, and obs/naming/splentry.
-    assert_equal(10 + v_nam + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_nam + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     new_name = Name.find_by_text_name(new_name_str)
@@ -358,10 +359,10 @@ class SpeciesListControllerTest < FunctionalTestCase
         :notes => "List Notes"
       },
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response('create_species_list')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     assert(!synonym_name.reload.deprecated)
     assert_nil(synonym_name.synonym)
   end
@@ -384,10 +385,10 @@ class SpeciesListControllerTest < FunctionalTestCase
       },
       :approved_names => new_name_str
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response('create_species_list')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     assert_nil(Name.find_by_text_name(new_name_str))
     assert_nil(SpeciesList.find_by_title(list_title))
   end
@@ -408,11 +409,11 @@ class SpeciesListControllerTest < FunctionalTestCase
       },
       :approved_names => new_name_str.squeeze(" ")
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
     # Must be creating Lactarius sp as well as L. rubidus (and spl and obs/splentry/naming).
-    assert_equal(10 + v_nam*2 + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_nam*2 + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     obs = spl.observations.first
@@ -441,11 +442,11 @@ class SpeciesListControllerTest < FunctionalTestCase
       },
       :approved_names => new_name_str
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
     # Creates Agaricaceae, spl, obs/naming/splentry.
-    assert_equal(10 + v_nam + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_nam + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     new_name = Name.find_by_text_name(new_name_str)
@@ -508,11 +509,11 @@ class SpeciesListControllerTest < FunctionalTestCase
     params[:approved_deprecated_names] =
         [deprecated_name.id.to_s, deprecated_checklist_name.id.to_s].join("\r\n")
 
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
     # Creates "New" and "New name", spl, and five obs/naming/splentries.
-    assert_equal(10 + v_nam*2 + v_spl + v_obs*5, @rolf.reload.contribution)
+    assert_equal(contribution + v_nam*2 + v_spl + v_obs*5, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert(spl.name_included(deprecated_name))
     assert(spl.name_included(multiple_name))
@@ -537,10 +538,10 @@ class SpeciesListControllerTest < FunctionalTestCase
         :notes => ""
       },
     }
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:create_species_list, params)
     assert_response('create_species_list')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     assert_equal("Warnerbros bugs-bunny",
                  @controller.instance_variable_get('@list_members'))
     assert_equal([], @controller.instance_variable_get('@new_names'))
@@ -564,13 +565,14 @@ class SpeciesListControllerTest < FunctionalTestCase
     }
     post(:create_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.last
     assert(spl.name_included(names(:bugs_bunny_two)))
   end
 
   # Test constructing species lists, tweaking member fields.
   def test_construct_species_list_with_member_fields
+    contribution = login('rolf').contribution
     list_title = "List Title"
     params = {
       :list => { :members => names(:coprinus_comatus).text_name },
@@ -594,7 +596,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     }
     post_requires_login(:create_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_spl + v_obs, @rolf.reload.contribution)
+    assert_equal(contribution + v_spl + v_obs, @rolf.reload.contribution)
     spl = SpeciesList.find_by_title(list_title)
     assert_not_nil(spl)
     assert(spl.name_included(names(:coprinus_comatus)))
@@ -624,12 +626,13 @@ class SpeciesListControllerTest < FunctionalTestCase
 
   def test_update_species_list_nochange
     spl = species_lists(:unknown_species_list)
+    contribution = spl.user.contribution
     sp_count = spl.observations.size
     params = spl_params(spl)
     post_requires_user(:edit_species_list, :show_species_list, params,
                        spl.user.login)
     assert_response(:action => :show_species_list)
-    assert_equal(10, spl.user.reload.contribution)
+    assert_equal(contribution, spl.user.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
   end
 
@@ -640,15 +643,15 @@ class SpeciesListControllerTest < FunctionalTestCase
     params[:list][:members] = "Coprinus comatus\r\nAgaricus campestris"
     owner = spl.user.login
     assert_not_equal('rolf', owner)
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
-    login owner
+    contribution = login(owner).contribution
     post_with_dump(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs*2, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs*2, spl.user.reload.contribution)
     assert_equal(sp_count + 2, spl.reload.observations.size)
   end
 
@@ -658,12 +661,11 @@ class SpeciesListControllerTest < FunctionalTestCase
     new_name = 'Agaricus nova'
     spl = species_lists(:unknown_species_list)
     sp_count = spl.observations.size
-    old_contribution = @mary.contribution
     params = spl_params(spl)
     params[:list][:members] = new_name
     owner = spl.user.login
     assert_equal('mary', owner)
-    login('mary')
+    contribution = login('mary').contribution
     post(:edit_species_list, params)
     assert_response('edit_species_list')
     spl.reload
@@ -673,7 +675,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     assert_response(:action => :show_species_list)
     spl.reload
     assert_equal(sp_count + 1, spl.observations.size)
-    assert_equal(old_contribution + v_nam + v_obs, @mary.reload.contribution)
+    assert_equal(contribution + v_nam + v_obs, @mary.reload.contribution)
   end
 
   def test_update_species_list_text_add
@@ -686,15 +688,15 @@ class SpeciesListControllerTest < FunctionalTestCase
     params[:species_list][:notes] = "New notes."
     owner = spl.user.login
     assert_not_equal('rolf', owner)
-    login('rolf')
+    contribution = login('rolf').contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     assert(spl.reload.observations.size == sp_count)
-    login owner
+    contribution = login(owner).contribution
     post_with_dump(:edit_species_list, params)
     assert_response(:controller => :location, :action => :create_location)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert_equal("New Place, California, USA", spl.where)
     assert_equal("New Title", spl.title)
@@ -716,10 +718,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     sp_count = spl.observations.size
     params = spl_params(spl)
     params[:list][:members] = "New name"
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, spl.user.reload.contribution)
+    assert_equal(contribution, spl.user.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
   end
 
@@ -729,11 +731,11 @@ class SpeciesListControllerTest < FunctionalTestCase
     params = spl_params(spl)
     params[:list][:members] = "New name"
     params[:approved_names] = "New name"
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
     # Creates 'New', 'New name', observations/splentry/naming.
-    assert_equal(10 + v_nam*2 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_nam*2 + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
   end
 
@@ -744,10 +746,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     assert(!spl.name_included(name))
     params = spl_params(spl)
     params[:list][:members] = name.text_name
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, spl.user.reload.contribution)
+    assert_equal(contribution, spl.user.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
     assert(!spl.name_included(name))
   end
@@ -760,10 +762,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params = spl_params(spl)
     params[:list][:members] = name.text_name
     params[:chosen_multiple_names] = {name.id.to_s => name.id.to_s}
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(spl.name_included(name))
   end
@@ -775,10 +777,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params = spl_params(spl)
     assert(!spl.name_included(name))
     params[:list][:members] = name.text_name
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, spl.user.reload.contribution)
+    assert_equal(contribution, spl.user.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
     assert(!spl.name_included(name))
   end
@@ -791,10 +793,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     assert(!spl.name_included(name))
     params[:list][:members] = name.text_name
     params[:approved_deprecated_names] = [name.id.to_s]
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(spl.name_included(name))
   end
@@ -806,10 +808,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params = spl_params(spl)
     assert(!spl.name_included(name))
     params[:checklist_data][name.id.to_s] = '1'
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(spl.name_included(name))
   end
@@ -821,10 +823,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params = spl_params(spl)
     assert(!spl.name_included(name))
     params[:checklist_data][name.id.to_s] = '1'
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, spl.user.reload.contribution)
+    assert_equal(contribution, spl.user.reload.contribution)
     assert_equal(sp_count, spl.reload.observations.size)
     assert(!spl.name_included(name))
   end
@@ -837,10 +839,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     assert(!spl.name_included(name))
     params[:checklist_data][name.id.to_s] = '1'
     params[:approved_deprecated_names] = [name.id.to_s]
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(spl.name_included(name))
   end
@@ -856,10 +858,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params[:approved_deprecated_names] = [name.id.to_s]
     params[:chosen_approved_names] =
                 { name.id.to_s => approved_name.id.to_s }
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(!spl.name_included(name))
     assert(spl.name_included(approved_name))
@@ -877,10 +879,10 @@ class SpeciesListControllerTest < FunctionalTestCase
     params[:approved_deprecated_names] = name.id.to_s
     params[:chosen_approved_names] =
                 { name.id.to_s => approved_name.id.to_s }
-    login(spl.user.login)
+    contribution = login(spl.user.login).contribution
     post(:edit_species_list, params)
     assert_response(:action => :show_species_list)
-    assert_equal(10 + v_obs, spl.user.reload.contribution)
+    assert_equal(contribution + v_obs, spl.user.reload.contribution)
     assert_equal(sp_count + 1, spl.reload.observations.size)
     assert(!spl.name_included(name))
     assert(spl.name_included(approved_name))
@@ -907,6 +909,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     list_data = "Agaricus bisporus\r\nBoletus rubripes\r\nAmanita phalloides"
     file = StringIOPlus.new(list_data)
     file.content_type = 'text/plain'
+    contribution = login('rolf').contribution
     params = {
       "id" => spl.id,
       "species_list" => {
@@ -915,7 +918,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     }
     post_requires_login(:upload_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     # Doesn't actually change list, just feeds it to edit_species_list
     assert_equal(list_data, @controller.instance_variable_get('@list_members'))
   end
@@ -928,6 +931,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     list_data = file.read.split(/\s*\n\s*/).reject(&:blank?).join("\r\n")
     file = FilePlus.new(filename)
     file.content_type = 'text/plain'
+    contribution = login('rolf').contribution
     params = {
       "id" => spl.id,
       "species_list" => {
@@ -936,7 +940,7 @@ class SpeciesListControllerTest < FunctionalTestCase
     }
     post_requires_login(:upload_species_list, params)
     assert_response('edit_species_list')
-    assert_equal(10, @rolf.reload.contribution)
+    assert_equal(contribution, @rolf.reload.contribution)
     # Doesn't preserve order yet.  Have to resort in order to compare.
     # assert_equal(list_data, @controller.instance_variable_get('@list_members'))
     new_data = @controller.instance_variable_get('@list_members')

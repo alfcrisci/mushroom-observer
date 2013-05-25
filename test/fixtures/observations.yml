@@ -148,3 +148,18 @@ peltigera_observation:
   specimen: 1
   notes: 'Growing on a hardwood'
   vote_cache: 3
+
+debatable_morchella_angusticeps_obs:
+  id: 13
+  sync_id: 13x1
+  created: 2013-05-11 10:50:49
+  modified: 2013-05-11 10:50:49
+  when: 2013-05-11
+  user_id: 1
+  location_id: 2
+  is_collection_location: 1
+  name_id: 50
+  specimen: 1
+  notes: 'Growing in mulch'
+  vote_cache: 3
+  latest_vote_id: 10

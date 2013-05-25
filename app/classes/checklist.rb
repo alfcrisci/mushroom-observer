@@ -95,6 +95,10 @@ class Checklist
     return @species.values.sort
   end
 
+  def contains(checklist)
+    ((checklist.genera - self.genera) == []) and  ((checklist.species - self.species) == [])
+  end
+  
 private
 
   def calc_checklist

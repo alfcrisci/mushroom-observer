@@ -91,7 +91,7 @@ rolf_morchella_angusticeps_naming:
   name_id: 50
   observation_id: 13
 
-mary_morchella_naming:
+mary_morchella_esculenta_naming:
   id: 11
   sync_id: 11xx1
   created: 2013-05-11 15:50:30
@@ -116,4 +116,22 @@ katrina_morchella_angusticeps_naming:
   modified: 2013-05-11 20:57:27
   user_id: 5
   name_id: 50
+  observation_id: 13
+
+mary_dick_morchella_esculenta_naming:
+  id: 14
+  sync_id: 14xx1
+  created: 2013-05-27 11:52:35
+  modified: 2013-05-27 11:52:35
+  user_id: 2
+  name_id: 52
+  observation_id: 13
+
+dick_helvella_esculenta_naming:
+  id: 15
+  sync_id: 15xx1
+  created: 2013-05-27 13:35:15
+  modified: 2013-05-27 13:35:15
+  user_id: 2
+  name_id: 53
   observation_id: 13

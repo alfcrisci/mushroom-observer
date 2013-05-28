@@ -1790,4 +1790,26 @@ class NameTest < UnitTestCase
     assert_obj_list_equal([species3, species4], Name.suggest_alternate_spellings('Lecanora grandi'))
     assert_obj_list_equal([species4, species5], Name.suggest_alternate_spellings('Lecanoa grandis'))
   end
+
+  def test_is_deprecated_synonym?
+    assert(names(:lactarius_alpigenes).is_deprecated_synonym?)
+    assert(!names(:fungi).is_deprecated_synonym?)
+    assert(!names(:pluteus_petasatus_deprecated).is_deprecated_synonym?)
+    assert(!names(:macrolepiota_rachodes).is_deprecated_synonym?)
+
+    assert(names(:lactarius_alpigenes).is_deprecated_synonym?(names(:lactarius_alpinus)))
+    assert(!names(:lactarius_alpinus).is_deprecated_synonym?(names(:lactarius_alpigenes)))
+    assert(!names(:lactarius_alpigenes).is_deprecated_synonym?(names(:macrolepiota_rachodes)))
+  end
+
+  def test_is_approved_synonym?
+    assert(!names(:lactarius_alpigenes).is_approved_synonym?)
+    assert(!names(:fungi).is_approved_synonym?)
+    assert(!names(:pluteus_petasatus_deprecated).is_approved_synonym?)
+    assert(names(:macrolepiota_rachodes).is_approved_synonym?)
+
+    assert(!names(:lactarius_alpigenes).is_approved_synonym?(names(:lactarius_alpinus)))
+    assert(names(:lactarius_alpinus).is_approved_synonym?(names(:lactarius_alpigenes)))
+    assert(!names(:lactarius_alpigenes).is_approved_synonym?(names(:macrolepiota_rachodes)))
+  end
 end

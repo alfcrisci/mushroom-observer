@@ -916,18 +916,37 @@ morchella_importuna:
   citation: ''
   notes: ''
 
-morchella:
+morchella_esculenta:
   id: 52
   sync_id: 52xx1
-  created: 2013-05-11 15:43:11
-  modified: 2013-05-11 15:43:11
+  created: 2013-05-27 13:29:45
+  modified: 2013-05-27 13:29:45
   user_id: 1
   version: 1
-  rank: Genus
-  text_name: Morchella
-  author: 'Dill. ex Pers.'
-  display_name: '**__Morchella__** Dill. ex Pers.'
-  search_name: Morchella angusticeps Dill. ex Pers.
-  sort_name: Morchella angusticeps Dill. ex Pers.
+  rank: Species
+  text_name: Morchella esculenta
+  author: '(L.) Pers.'
+  display_name: '**__Morchella esculenta__** (L.) Pers.'
+  search_name: Morchella esculenta (L.) Pers.
+  sort_name: Morchella esculenta (L.) Pers.
+  synonym_id: 5
+  citation: ''
+  notes: ''
+
+helvella_esculenta:
+  id: 53
+  sync_id: 53xx1
+  created: 2013-05-27 13:31:45
+  modified: 2013-05-27 13:31:45
+  user_id: 1
+  version: 1
+  rank: Species
+  text_name: Helvella esculenta
+  author: '(L.) Sowerby'
+  display_name: '**__Helvella esculenta__** (L.) Sowerby'
+  search_name: Helvella esculenta (L.) Sowerby
+  sort_name: Helvella esculenta (L.) Sowerby
+  synonym_id: 5
+  deprecated: 1
   citation: ''
   notes: ''

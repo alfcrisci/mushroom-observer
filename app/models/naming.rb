@@ -302,16 +302,68 @@ class Naming < AbstractModel
     return table
   end
 
-  def refresh_vote_cache
+  def calc_score_and_weight
     total = 0
     total_weight = 0
-    for v in votes
+    for v in self.votes
       weight = v.user_weight
       weight += 1 if v.observation.latest_vote == v
       total += v.value * weight
       total_weight += weight
     end
-    self.vote_cache = total.to_f / (total_weight + 1.0)
+    [total, total_weight]
+  end
+  
+  def refresh_vote_cache
+    total, total_weight = calc_score_and_weight
+    self.vote_cache = total / (total_weight + 1.0)
+  end
+
+  # Given a set of synonym ids is this naming for a synonym
+  # that has already been considered
+  def is_repeat?(synonyms)
+    result = false
+    synonym_id = self.name.synonym_id
+    if synonym_id
+      if synonyms.member?(synonym_id)
+        result = true
+      else
+        synonyms.add(synonym_id)
+      end
+    end
+    result
+  end
+  
+  def best_naming(namings)
+    result = self
+    if self.name.is_deprecated_synonym?
+      synonym_id = self.name.synonym_id
+      for n in namings
+        if n.name.is_approved_synonym?(self.name)
+          result = n
+          break
+        end
+      end
+    end
+    result
+  end
+  
+  def score(namings)
+    total_score = 0
+    total_weight = 0
+    id = self.name.synonym_id
+    if id
+      for n in namings
+        if id == n.name.synonym_id
+          score, weight = n.calc_score_and_weight
+          total_score += score
+          total_weight += weight
+        end
+      end
+    else
+      total_score, total_weight = self.calc_score_and_weight
+    end
+    total_score / (total_weight + 1.0)
   end
   
   ##############################################################################

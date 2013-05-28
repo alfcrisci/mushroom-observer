@@ -170,4 +170,12 @@ class NamingTest < UnitTestCase
     nrs[1].delete
     assert_equal({2=>'', 3=>'test'}, naming.reasons)
   end
+  
+  def test_is_repeat?
+    assert(!namings(:dick_helvella_esculenta_naming).is_repeat?(Set.new()))
+  end
+  
+  def test_best_naming
+    assert_equal(namings(:mary_morchella_esculenta_naming), namings(:dick_helvella_esculenta_naming).best_naming(Naming.find(:all)))
+  end
 end

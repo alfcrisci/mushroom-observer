@@ -14,3 +14,7 @@ lactarius_alpinus_synonym:
 peltigera_synonym:
   id: 4
   sync_id: 4xx1
+
+morchella_esculenta_synonym:
+  id: 5
+  sync_id: 5xx1

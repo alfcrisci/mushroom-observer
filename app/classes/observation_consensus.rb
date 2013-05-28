@@ -1,15 +1,26 @@
 class ObservationConsensus
-  attr_accessor :consensus
-  
   def initialize
-    self.consensus = nil
-    @max_score = Vote.minimum_vote - 1
+    @namings = Set.new()
   end
   
   def add_naming(naming)
-    if naming.vote_cache > @max_score
-      @max_score = naming.vote_cache
-      self.consensus = naming
+    @namings.add(naming)
+  end
+  
+  def consensus
+    result = nil
+    max_score = Vote.minimum_vote - 1
+    synonyms = Set.new()
+    for naming in @namings
+      unless naming.is_repeat?(synonyms)
+        best_naming = naming.best_naming(@namings)
+        score = best_naming.score(@namings)
+        if score > max_score
+          result = best_naming
+          max_score = score
+        end
+      end
     end
+    result
   end
 end

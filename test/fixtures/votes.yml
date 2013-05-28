@@ -71,7 +71,7 @@ amateur_vote:
   favorite: true
   observation_id: 11
 
-rolf_coprinus_comatus_vote:
+rolf_morchella_angusticeps_vote:
   id: 7
   sync_id: 7xx1
   created: 2013-05-12 09:05:30
@@ -82,7 +82,7 @@ rolf_coprinus_comatus_vote:
   favorite: true
   observation_id: 13
 
-mary_coprinus_vote:
+mary_morchella_esculenta_vote:
   id: 8
   sync_id: 8xx1
   created: 2013-05-12 09:06:00
@@ -93,7 +93,7 @@ mary_coprinus_vote:
   favorite: true
   observation_id: 13
 
-roy_coprinus_calyptratus_vote:
+roy_morchella_importuna_vote:
   id: 9
   sync_id: 9xx1
   created: 2013-05-12 09:06:15
@@ -104,13 +104,46 @@ roy_coprinus_calyptratus_vote:
   favorite: true
   observation_id: 13
 
-katrina_coprinus_comatus_vote:
+katrina_morchella_angusticeps_vote:
   id: 10
   sync_id: 10xx1
   created: 2013-05-12 09:06:30
   modified: 2013-05-12 09:06:30
   user_id: 5
   naming_id: 13
+  value: 3
+  favorite: true
+  observation_id: 13
+
+mary_morchella_esculenta_vote_2:
+  id: 11
+  sync_id: 11xx1
+  created: 2013-05-27 12:02:15
+  modified: 2013-05-27 12:02:15
+  user_id: 2
+  naming_id: 14
+  value: 3
+  favorite: true
+  observation_id: 13
+
+dick_morchella_esculenta_vote:
+  id: 12
+  sync_id: 12xx1
+  created: 2013-05-27 12:02:15
+  modified: 2013-05-27 12:02:15
+  user_id: 4
+  naming_id: 14
+  value: 3
+  favorite: true
+  observation_id: 13
+
+dick_helvella_esculenta_vote:
+  id: 13
+  sync_id: 13xx1
+  created: 2013-05-27 21:13:05
+  modified: 2013-05-27 21:13:05
+  user_id: 4
+  naming_id: 15
   value: 3
   favorite: true
   observation_id: 13

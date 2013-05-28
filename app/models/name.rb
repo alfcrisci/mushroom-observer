@@ -907,6 +907,14 @@ class Name < AbstractModel
   #
   ##############################################################################
 
+  def is_deprecated_synonym?(name=nil)
+    self.deprecated and self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
+  end
+
+  def is_approved_synonym?(name=nil)
+    !self.deprecated and self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
+  end
+  
   # Returns "Deprecated" or "Valid" in the local language.
   def status
     deprecated ? :DEPRECATED.l : :ACCEPTED.l

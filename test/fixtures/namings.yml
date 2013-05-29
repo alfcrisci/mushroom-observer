@@ -135,3 +135,12 @@ dick_helvella_esculenta_naming:
   user_id: 2
   name_id: 53
   observation_id: 13
+
+dick_mary_helvella_esculenta_naming  :
+  id: 16
+  sync_id: 16xx1
+  created: 2013-05-28 20:53:30
+  modified: 2013-05-28 20:53:30
+  user_id: 2
+  name_id: 53
+  observation_id: 13

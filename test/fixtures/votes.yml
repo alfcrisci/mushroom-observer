@@ -147,3 +147,25 @@ dick_helvella_esculenta_vote:
   value: 3
   favorite: true
   observation_id: 13
+
+dick_helvella_esculenta_vote_2:
+  id: 14
+  sync_id: 14xx1
+  created: 2013-05-28 20:54:55
+  modified: 2013-05-28 20:54:55
+  user_id: 4
+  naming_id: 16
+  value: 3
+  favorite: true
+  observation_id: 13
+
+mary_helvella_esculenta_vote:
+  id: 15
+  sync_id: 15xx1
+  created: 2013-05-28 20:55:55
+  modified: 2013-05-28 20:55:55
+  user_id: 2
+  naming_id: 16
+  value: -3
+  favorite: false
+  observation_id: 13

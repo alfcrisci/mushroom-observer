@@ -302,10 +302,10 @@ class Naming < AbstractModel
     return table
   end
 
-  def calc_score_and_weight
+  def calc_score_and_weight(votes)
     total = 0
     total_weight = 0
-    for v in self.votes
+    for v in votes
       weight = v.user_weight
       weight += 1 if v.observation.latest_vote == v
       total += v.value * weight
@@ -315,7 +315,7 @@ class Naming < AbstractModel
   end
   
   def refresh_vote_cache
-    total, total_weight = calc_score_and_weight
+    total, total_weight = calc_score_and_weight(self.votes)
     self.vote_cache = total / (total_weight + 1.0)
   end
 
@@ -348,21 +348,29 @@ class Naming < AbstractModel
     result
   end
   
+  def synonym_votes(id, namings)
+    user_votes = {}
+    for n in namings
+      if id == n.name.synonym_id
+        for v in n.votes
+          user_votes[v.user_id] = v.better_vote(user_votes[v.user_id])
+        end
+      end
+    end
+    user_votes.values
+  end
+  
   def score(namings)
     total_score = 0
     total_weight = 0
     id = self.name.synonym_id
+    votes = []
     if id
-      for n in namings
-        if id == n.name.synonym_id
-          score, weight = n.calc_score_and_weight
-          total_score += score
-          total_weight += weight
-        end
-      end
+      votes = synonym_votes(id, namings)
     else
-      total_score, total_weight = self.calc_score_and_weight
+      votes += self.votes
     end
+    total_score, total_weight = self.calc_score_and_weight(votes)
     total_score / (total_weight + 1.0)
   end
   

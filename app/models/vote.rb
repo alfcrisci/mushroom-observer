@@ -229,6 +229,10 @@ class Vote < AbstractModel
     (user.votes_anonymous == :old and modified > Time.parse(VOTE_CUTOFF))
   end
 
+  def better_vote(vote)
+    (vote.nil? or (self.value >= vote.value)) ? self : vote
+  end
+  
 ################################################################################
 
 protected

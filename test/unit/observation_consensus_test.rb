@@ -131,12 +131,24 @@ class ObservationConsensusTest < UnitTestCase
     assert_equal(target_naming.votes.length, other_naming.votes.length)
   end
   
-  # Two deprecated synonyms
-  
-  # Two approved synonyms
-  
-  # Repeated name vs. single stronger name (observer)
-  
   # Ignore weaker votes for synonyms
+  def test_ignore_weaker_vote
+    obj = ObservationConsensus.new
+    other_naming = namings(:katrina_morchella_angusticeps_naming)
+    other_naming.refresh_vote_cache
+    obj.add_naming(other_naming)
+    
+    target_naming = namings(:mary_morchella_esculenta_naming)
+    target_naming.refresh_vote_cache
+    obj.add_naming(target_naming)
+    
+    synonym_naming = namings(:dick_mary_helvella_esculenta_naming)
+    synonym_naming.refresh_vote_cache
+    obj.add_naming(synonym_naming)
+  
+    assert_equal(target_naming, obj.consensus)
+  end
+  
+  # Add confidence: Russula, R. xerampelina example.  Other examples? 
   
 end

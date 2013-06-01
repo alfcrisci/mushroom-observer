@@ -39,6 +39,35 @@ namespace :cache do
     end
   end
   
+  task(:test_observation_consensus => :environment) do
+    print "Comparing old algorithm with the new algorithm...\n"
+    min_oid = ENV["MIN_OBSERVATION"]
+    max_oid = ENV["MAX_OBSERVATION"]
+    conditions = ["user_id != 0"]
+    conditions.push("id >= #{min_oid}") if min_oid
+    conditions.push("id <= #{max_oid}") if max_oid
+    try_count = 1
+    count = 0
+    for o in Observation.find(:all, :conditions => conditions.join(" and "))
+      print "##{o.id}\r"
+      count = count + 1
+      if count > try_count
+        print "\n"
+        try_count += try_count
+      end
+      o.calc_consensus
+      name = o.name
+      oc = ObservationConsensus.new()
+      for n in o.namings
+        oc.add_naming(n)
+      end
+      oc_name = oc.consensus.name
+      if oc_name != name
+        print "#{o.id}: #{name.text_name} != #{oc_name.text_name}\n"
+      end
+    end
+  end
+  
   desc "Report namings for observations"
   task(:report_observations => :environment) do
     min_oid = ENV["MIN_OBSERVATION"]

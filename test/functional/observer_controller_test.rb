@@ -1072,7 +1072,7 @@ class ObserverControllerTest < FunctionalTestCase
       :observation => { :place_name => 'Earth', :lat => '', :long => '' },
       :name => { :name => "Morchella elata group" },
       :approved_name => "Morchella elata group",
-    }, 1,1,1)
+    }, 1,1,2)
     name = Name.last
     assert_equal('Morchella elata group', name.text_name)
     assert_equal('', name.author)

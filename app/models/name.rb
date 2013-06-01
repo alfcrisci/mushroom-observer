@@ -907,6 +907,10 @@ class Name < AbstractModel
   #
   ##############################################################################
 
+  def has_synonyms?
+    self.synonym_id != nil
+  end
+
   def is_deprecated_synonym?(name=nil)
     self.deprecated and self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
   end

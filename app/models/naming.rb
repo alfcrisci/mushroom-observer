@@ -336,12 +336,13 @@ class Naming < AbstractModel
   
   def best_naming(namings)
     result = self
-    if self.name.is_deprecated_synonym?
-      synonym_id = self.name.synonym_id
+    if self.name.has_synonyms?
       for n in namings
         if n.name.is_approved_synonym?(self.name)
-          result = n
-          break
+          n.refresh_vote_cache if n.vote_cache == 0
+          if (result != n) and (n.vote_cache > result.vote_cache)
+            result = n
+          end
         end
       end
     end

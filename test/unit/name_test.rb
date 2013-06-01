@@ -1791,6 +1791,11 @@ class NameTest < UnitTestCase
     assert_obj_list_equal([species4, species5], Name.suggest_alternate_spellings('Lecanoa grandis'))
   end
 
+  def test_has_synonyms?
+    assert(names(:macrolepiota_rachodes).has_synonyms?)
+    assert(!names(:coprinus_comatus).has_synonyms?)
+  end
+  
   def test_is_deprecated_synonym?
     assert(names(:lactarius_alpigenes).is_deprecated_synonym?)
     assert(!names(:fungi).is_deprecated_synonym?)

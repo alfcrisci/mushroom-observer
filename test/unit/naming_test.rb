@@ -176,6 +176,11 @@ class NamingTest < UnitTestCase
   end
   
   def test_best_naming
-    assert_equal(namings(:mary_morchella_esculenta_naming), namings(:dick_helvella_esculenta_naming).best_naming(Naming.find(:all)))
+    all_namings = Naming.find(:all)
+    assert_equal(namings(:mary_dick_morchella_esculenta_naming), namings(:dick_helvella_esculenta_naming).best_naming(all_namings))
+    mary_naming = namings(:mary_macrolepiota_rachodes_naming)
+    rolf_naming = namings(:rolf_macrolepiota_rhacodes_naming)
+    assert_equal(rolf_naming, mary_naming.best_naming([mary_naming, rolf_naming]))
+    assert_equal(rolf_naming, rolf_naming.best_naming([rolf_naming, mary_naming]))
   end
 end

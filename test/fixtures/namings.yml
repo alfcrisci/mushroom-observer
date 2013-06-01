@@ -144,3 +144,21 @@ dick_mary_helvella_esculenta_naming  :
   user_id: 2
   name_id: 53
   observation_id: 13
+
+mary_macrolepiota_rachodes_naming:
+  id: 17
+  sync_id: 17xx1
+  created: 2013-05-30 18:58:00
+  modified: 2013-05-30 18:58:00
+  user_id: 2
+  name_id: 9
+  observation_id: 14
+
+rolf_macrolepiota_rhacodes_naming:
+  id: 18
+  sync_id: 18xx1
+  created: 2013-05-30 18:58:00
+  modified: 2013-05-30 18:58:00
+  user_id: 1
+  name_id: 10
+  observation_id: 14

@@ -169,3 +169,25 @@ mary_helvella_esculenta_vote:
   value: -3
   favorite: false
   observation_id: 13
+
+mary_macrolepiota_rachodes_vote:
+  id: 16
+  sync_id: 16xx1
+  created: 2013-05-30 19:07:50
+  modified: 2013-05-30 19:07:50
+  user_id: 2
+  naming_id: 17
+  value: 3
+  favorite: true
+  observation_id: 14
+
+rolf_macrolepiota_rhacodes_vote:
+  id: 17
+  sync_id: 17xx1
+  created: 2013-05-30 19:08:50
+  modified: 2013-05-30 19:08:50
+  user_id: 1
+  naming_id: 18
+  value: 3
+  favorite: true
+  observation_id: 14

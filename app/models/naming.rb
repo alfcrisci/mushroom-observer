@@ -317,8 +317,13 @@ class Naming < AbstractModel
   def refresh_vote_cache
     total, total_weight = calc_score_and_weight(self.votes)
     self.vote_cache = total / (total_weight + 1.0)
+    self
   end
 
+  def check_vote_cache
+    (self.vote_cache == 0) ? self.refresh_vote_cache : self
+  end
+  
   # Given a set of synonym ids is this naming for a synonym
   # that has already been considered
   def is_repeat?(synonyms)
@@ -335,18 +340,23 @@ class Naming < AbstractModel
   end
   
   def best_naming(namings)
-    result = self
+    result = self.check_vote_cache
     if self.name.has_synonyms?
       for n in namings
-        if n.name.is_approved_synonym?(self.name)
-          n.refresh_vote_cache if n.vote_cache == 0
-          if (result != n) and (n.vote_cache > result.vote_cache)
-            result = n
-          end
-        end
+        result = result.better_synonym(n.check_vote_cache)
       end
     end
     result
+  end
+  
+  def better_synonym(naming)
+    my_name = self.name
+    other_name = naming.name
+    if other_name.is_better_synonym?(my_name) or (other_name.is_equivalent_synonym?(my_name) and (self.vote_cache < naming.vote_cache))
+      naming
+    else
+      self
+    end
   end
   
   def synonym_votes(id, namings)

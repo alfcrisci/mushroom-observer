@@ -8,7 +8,6 @@ class ObservationConsensus
   end
   
   def consensus
-    result = nil
     max_score = Vote.minimum_vote - 1
     synonyms = Set.new()
     for naming in @namings

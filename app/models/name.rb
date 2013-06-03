@@ -911,12 +911,17 @@ class Name < AbstractModel
     self.synonym_id != nil
   end
 
-  def is_deprecated_synonym?(name=nil)
-    self.deprecated and self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
+  def is_synonym?(name=nil)
+    self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
   end
 
-  def is_approved_synonym?(name=nil)
-    !self.deprecated and self.synonym_id and (name.nil? or (self.synonym_id == name.synonym_id))
+  # self is better synonym for name
+  def is_better_synonym?(name)
+    self.is_synonym?(name) and !self.deprecated and name.deprecated
+  end
+  
+  def is_equivalent_synonym?(name)
+    self.is_synonym?(name) and (self.deprecated == name.deprecated)
   end
   
   # Returns "Deprecated" or "Valid" in the local language.

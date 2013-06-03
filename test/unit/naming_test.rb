@@ -175,12 +175,26 @@ class NamingTest < UnitTestCase
     assert(!namings(:dick_helvella_esculenta_naming).is_repeat?(Set.new()))
   end
   
-  def test_best_naming
+  def test_best_naming_approved_wins
     all_namings = Naming.find(:all)
     assert_equal(namings(:mary_dick_morchella_esculenta_naming), namings(:dick_helvella_esculenta_naming).best_naming(all_namings))
+  end
+  
+  def test_best_naming_both_approved
     mary_naming = namings(:mary_macrolepiota_rachodes_naming)
     rolf_naming = namings(:rolf_macrolepiota_rhacodes_naming)
+    assert(!mary_naming.name.deprecated)
+    assert(!rolf_naming.name.deprecated)
     assert_equal(rolf_naming, mary_naming.best_naming([mary_naming, rolf_naming]))
     assert_equal(rolf_naming, rolf_naming.best_naming([rolf_naming, mary_naming]))
+  end
+  
+  def test_best_naming_both_deprecated
+    dick_naming = namings(:dick_helvella_esculenta_naming)
+    rolf_naming = namings(:rolf_phallus_esculentus_naming)
+    assert(dick_naming.name.deprecated)
+    assert(rolf_naming.name.deprecated)
+    assert_equal(rolf_naming, dick_naming.best_naming([dick_naming, rolf_naming]))
+    assert_equal(rolf_naming, rolf_naming.best_naming([rolf_naming, dick_naming]))
   end
 end

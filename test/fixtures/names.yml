@@ -950,3 +950,21 @@ helvella_esculenta:
   deprecated: 1
   citation: ''
   notes: ''
+
+phallus_esculentus:
+  id: 54
+  sync_id: 54xx1
+  created: 2013-06-03 16:12:10
+  modified: 2013-06-03 16:12:10
+  user_id: 1
+  version: 1
+  rank: Species
+  text_name: Phallus esculentus
+  author: 'L.'
+  display_name: '**__Phallus esculentus__** L.'
+  search_name: Phallus esculentus L.
+  sort_name: Phallus esculentus L.
+  synonym_id: 5
+  deprecated: 1
+  citation: ''
+  notes: ''

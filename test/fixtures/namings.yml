@@ -162,3 +162,12 @@ rolf_macrolepiota_rhacodes_naming:
   user_id: 1
   name_id: 10
   observation_id: 14
+
+rolf_phallus_esculentus_naming:
+  id: 20
+  sync_id: 20xx1
+  created: 2013-06-02 08:25:22
+  modified: 2013-06-02 08:25:22
+  user_id: 1
+  name_id: 54
+  observation_id: 13

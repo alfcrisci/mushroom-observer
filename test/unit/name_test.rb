@@ -1796,25 +1796,24 @@ class NameTest < UnitTestCase
     assert(!names(:coprinus_comatus).has_synonyms?)
   end
   
-  def test_is_deprecated_synonym?
-    assert(names(:lactarius_alpigenes).is_deprecated_synonym?)
-    assert(!names(:fungi).is_deprecated_synonym?)
-    assert(!names(:pluteus_petasatus_deprecated).is_deprecated_synonym?)
-    assert(!names(:macrolepiota_rachodes).is_deprecated_synonym?)
-
-    assert(names(:lactarius_alpigenes).is_deprecated_synonym?(names(:lactarius_alpinus)))
-    assert(!names(:lactarius_alpinus).is_deprecated_synonym?(names(:lactarius_alpigenes)))
-    assert(!names(:lactarius_alpigenes).is_deprecated_synonym?(names(:macrolepiota_rachodes)))
+  def test_is_synonym?(name=nil)
+    assert(names(:lactarius_subalpinus).is_synonym?)
+    assert(!names(:fungi).is_synonym?)
+    assert(names(:lactarius_subalpinus).is_synonym?(names(:lactarius_alpinus)))
+    assert(!names(:lactarius_subalpinus).is_synonym?(names(:macrolepiota_rachodes)))
   end
 
-  def test_is_approved_synonym?
-    assert(!names(:lactarius_alpigenes).is_approved_synonym?)
-    assert(!names(:fungi).is_approved_synonym?)
-    assert(!names(:pluteus_petasatus_deprecated).is_approved_synonym?)
-    assert(names(:macrolepiota_rachodes).is_approved_synonym?)
-
-    assert(!names(:lactarius_alpigenes).is_approved_synonym?(names(:lactarius_alpinus)))
-    assert(names(:lactarius_alpinus).is_approved_synonym?(names(:lactarius_alpigenes)))
-    assert(!names(:lactarius_alpigenes).is_approved_synonym?(names(:macrolepiota_rachodes)))
+  def test_is_better_synonym?(name)
+    assert(names(:lactarius_alpinus).is_better_synonym?(names(:lactarius_subalpinus))) # a, d
+    assert(!names(:lactarius_subalpinus).is_better_synonym?(names(:lactarius_kuehneri))) # d, d
+    assert(!names(:lactarius_subalpinus).is_better_synonym?(names(:lactarius_alpinus))) # a, d
+    assert(!names(:lactarius_alpinus).is_better_synonym?(names(:lactarius_alpinus))) # a, d
+  end
+  
+  def test_is_equivalent_synonym?(name)
+    assert(!names(:lactarius_alpinus).is_better_synonym?(names(:lactarius_subalpinus))) # a, d
+    assert(names(:lactarius_subalpinus).is_better_synonym?(names(:lactarius_kuehneri))) # d, d
+    assert(!names(:lactarius_subalpinus).is_better_synonym?(names(:lactarius_alpinus))) # a, d
+    assert(names(:lactarius_alpinus).is_better_synonym?(names(:lactarius_alpinus))) # a, d
   end
 end

@@ -61,7 +61,8 @@ namespace :cache do
       for n in o.namings
         oc.add_naming(n)
       end
-      oc_name = oc.consensus.name
+      oc_naming = oc.consensus
+      oc_name = oc_naming ? oc_naming.name : Name.unknown
       if oc_name != name
         print "#{o.id}: #{name.text_name} != #{oc_name.text_name}\n"
       end

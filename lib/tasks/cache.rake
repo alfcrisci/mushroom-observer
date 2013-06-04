@@ -41,11 +41,13 @@ namespace :cache do
   
   task(:test_observation_consensus => :environment) do
     print "Comparing old algorithm with the new algorithm...\n"
-    min_oid = ENV["MIN_OBSERVATION"]
-    max_oid = ENV["MAX_OBSERVATION"]
     conditions = ["user_id != 0"]
+    min_oid = ENV["MIN_OBSERVATION"]
     conditions.push("id >= #{min_oid}") if min_oid
+    max_oid = ENV["MAX_OBSERVATION"]
     conditions.push("id <= #{max_oid}") if max_oid
+    oid_file = ENV["OBSERVATION_FILE"]
+    conditions.push("id in (#{open(oid_file).readlines.map {|i| i.to_i}.join(", ")})") if oid_file
     try_count = 1
     count = 0
     for o in Observation.find(:all, :conditions => conditions.join(" and "))
